@@ -7,7 +7,7 @@
   "scripts": {
     "build": "npm run build-compile & npm run build-bundle & npm run build-optimize",
     "build-compile": "tsc",
-    "build-bundle": "browserify ./dist/libraries/main.js -o ./dist/libraries/main.bundle.js -s WebPushService & browserify ./dist/demo/service-worker.js -o ./dist/demo/service-worker.bundle.js -s WebPushServiceServiceWorker",
+    "build-bundle": "browserify ./dist/libraries/main.js -o ./dist/libraries/main.bundle.js -s WebPushService & browserify ./dist/libraries/service-worker.js -o ./dist/libraries/service-worker.bundle.js -s WebPushServiceServiceWorker",
     "build-optimize": "uglifyjs ./dist/libraries/main.bundle.js -o ./dist/libraries/main.bundle.min.js & uglifyjs ./dist/libraries/service-worker.bundle.js -o ./dist/libraries/service-worker.bundle.min.js",
     "start": "npm run build & node ./dist/main.js start --port 8080",
     "start-demo": "npm run build-demo & http-server -c -1 -o http://localhost:8082/index.html -p 8082 ./src/demo",
