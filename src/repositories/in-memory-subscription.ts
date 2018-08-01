@@ -9,7 +9,7 @@ export class InMemorySubscriptionRepository implements ISubscriptionRepository {
     if (!InMemorySubscriptionRepository.database) {
       InMemorySubscriptionRepository.database = new NeDB({
         autoload: true,
-        filename: './subscriptions',
+        filename: './subscriptions.dat',
       });
     }
   }
@@ -39,6 +39,12 @@ export class InMemorySubscriptionRepository implements ISubscriptionRepository {
           if (error) {
             reject(error);
 
+            return;
+          }
+
+          if (!document) {
+            resolve(null);
+  
             return;
           }
 

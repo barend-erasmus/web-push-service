@@ -1,32 +1,43 @@
 import * as express from 'express';
-import { InMemorySubscriptionRepository } from './repositories/in-memory-subscription';
-import { InMemoryClientRepository } from './repositories/in-memory-client';
 import * as bodyParser from 'body-parser';
 import { SubscriptionRouter } from './routes/subscription';
 import { PushRouter } from './routes/push';
 import * as cors from 'cors';
 import { ClientRouter } from './routes/client';
+import { IClientRepository } from './interfaces/client-repository';
+import { ISubscriptionRepository } from './interfaces/subscription-repository';
 
-const app = express();
+export function initialize(
+  clientRepository: IClientRepository,
+  subscriptionRepository: ISubscriptionRepository,
+): express.Application {
+  const expressApplication: express.Application = express();
 
-app.use(cors());
+  expressApplication.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
+    console.log(`${request.method}: ${request.url}`);
 
-app.use(bodyParser.json());
+    next();
+  });
 
-app.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
-  request['clientRepository'] = new InMemoryClientRepository();
-  request['subscriptionRepository'] = new InMemorySubscriptionRepository();
+  expressApplication.use(cors());
 
-  next();
-});
+  expressApplication.use(bodyParser.json());
 
-app.route('/client').post(ClientRouter.post);
+  expressApplication.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
+    request['clientRepository'] = clientRepository;
+    request['subscriptionRepository'] = subscriptionRepository;
 
-app.route('/push/:channel').post(PushRouter.post);
+    next();
+  });
 
-app
-  .route('/subscription/:channel/:publicKey')
-  .delete(SubscriptionRouter.post)
-  .post(SubscriptionRouter.post);
+  expressApplication.route('/client').post(ClientRouter.post);
 
-export { app };
+  expressApplication.route('/push/:channel').post(PushRouter.post);
+
+  expressApplication
+    .route('/subscription/:channel/:publicKey')
+    .delete(SubscriptionRouter.post)
+    .post(SubscriptionRouter.post);
+
+  return expressApplication;
+}

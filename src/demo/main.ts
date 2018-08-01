@@ -1,42 +1,50 @@
-const publicKey: string = 'BH7ycnb_eKT4RvqRkbTSMVzCHJHXufNqHqhfuclK_m2OSgec7Uo7gJuryQA6tyxC0kjEVdTShh6i3w1HSRhBj3I';
+import { PushManagerHelper } from '../helpers/push-manager';
 
-const endpoint: string = 'http://localhost:8080/subscription/web-push-service-demo';
-const key: string = 'd276ae86-ade3-4423-968b-a23a70fc7aa2';
-
-if ('serviceWorker' in navigator && 'PushManager' in window) {
-  navigator.serviceWorker
-    .register('service-worker.bundle.js');
-
-    navigator.serviceWorker.ready.then((registration: ServiceWorkerRegistration) => {
-      return registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlB64ToUint8Array(publicKey),
-      });
-    })
-    .then((pushSubscription: PushSubscription) => {
-      return fetch(endpoint, {
-        body: JSON.stringify(pushSubscription.toJSON()),
-        headers: {
-          Authorization: key,
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-      });
-    })
-    .catch((error: Error) => {
-      console.error(error);
-    });
+function hasServiceWorkerFunctionality(): boolean {
+  return 'serviceWorker' in navigator;
 }
 
-function urlB64ToUint8Array(base64String: string): Uint8Array {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+function hasPushManagerFunctionality(): boolean {
+  return 'PushManager' in window;
+}
 
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
+function registerServiceWorker(): void {
+  navigator.serviceWorker.register('service-worker.bundle.min.js');
+}
 
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
+async function subscribe(channel: string, pushSubscription: PushSubscription = null): Promise<void> {
+  if (!pushSubscription) {
+    pushSubscription = await state.serviceWorkerRegistration.pushManager.getSubscription();
   }
-  return outputArray;
+
+  await fetch(`${state.webPushServiceHost}/subscription/${channel}/${state.publicKey}`, {
+    body: JSON.stringify(pushSubscription.toJSON()),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+  });
+}
+
+const state: any = {
+  publicKey: '',
+  webPushServiceHost: 'http://localhost:8080',
+  serviceWorkerRegistration: null,
+};
+
+export async function initialize(publicKey: string): Promise<void> {
+  state.publicKey = publicKey;
+
+  if (hasServiceWorkerFunctionality() && hasPushManagerFunctionality()) {
+    registerServiceWorker();
+
+    state.serviceWorkerRegistration = await navigator.serviceWorker.ready;
+
+    const pushSubscription: PushSubscription = await state.serviceWorkerRegistration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: PushManagerHelper.publicKeyToApplicationServerKey(state.publicKey),
+    });
+
+    await subscribe('default', pushSubscription);
+  }
 }

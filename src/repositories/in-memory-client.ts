@@ -9,7 +9,7 @@ export class InMemoryClientRepository implements IClientRepository {
     if (!InMemoryClientRepository.database) {
       InMemoryClientRepository.database = new NeDB({
         autoload: true,
-        filename: './clients',
+        filename: './clients.dat',
       });
     }
   }
@@ -19,6 +19,12 @@ export class InMemoryClientRepository implements IClientRepository {
       InMemoryClientRepository.database.findOne({ key }, (error: Error, document: any) => {
         if (error) {
           reject(error);
+
+          return;
+        }
+
+        if (!document) {
+          resolve(null);
 
           return;
         }
@@ -33,6 +39,12 @@ export class InMemoryClientRepository implements IClientRepository {
       InMemoryClientRepository.database.findOne({ publicKey }, (error: Error, document: any) => {
         if (error) {
           reject(error);
+
+          return;
+        }
+
+        if (!document) {
+          resolve(null);
 
           return;
         }

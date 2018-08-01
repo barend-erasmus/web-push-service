@@ -1,12 +1,12 @@
 {
   "name": "web-push-service",
-  "version": "1.0.0",
+  "version": "0.0.5",
   "description": "",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "build-demo": "tsc & browserify ./dist/demo/main.js -s WebPushServiceDemo -o ./src/demo/main.bundle.js & uglifyjs ./src/demo/main.bundle.js -o ./src/demo/main.bundle.min.js & browserify ./dist/demo/service-worker.js -s WebPushServiceDemoServiceWorker -o ./src/demo/service-worker.bundle.js & uglifyjs ./src/demo/service-worker.bundle.js -o ./src/demo/service-worker.bundle.min.js",
+    "build-demo": "tsc & browserify ./dist/demo/main.js --ignore ajv --ignore body-parser --ignore chalk --ignore commander --ignore cors --ignore express --ignore nedb --ignore web-push -s WebPushServiceDemo -o ./src/demo/main.bundle.js & uglifyjs ./src/demo/main.bundle.js -o ./src/demo/main.bundle.min.js & browserify ./dist/demo/service-worker.js --ignore ajv --ignore body-parser --ignore chalk --ignore commander --ignore cors --ignore express --ignore nedb --ignore web-push -s WebPushServiceDemoServiceWorker -o ./src/demo/service-worker.bundle.js & uglifyjs ./src/demo/service-worker.bundle.js -o ./src/demo/service-worker.bundle.min.js",
     "start": "npm run build & node ./dist/main.js start --port 8080",
     "start-demo": "npm run build-demo & http-server -c -1 -o http://localhost:8082/index.html -p 8082 ./src/demo",
     "test": "npm run build & node ./dist/tests.js"
@@ -31,6 +31,8 @@
   "dependencies": {
     "ajv": "^6.5.2",
     "body-parser": "^1.18.3",
+    "chalk": "^2.4.1",
+    "commander": "^2.16.0",
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "nedb": "^1.8.0",
@@ -38,6 +40,6 @@
     "web-push": "^3.3.2"
   },
   "bin": {
-    "wsmq": "./bin/wsmq"
+    "web-push-service": "./bin/web-push-service"
   }
 }

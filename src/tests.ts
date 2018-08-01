@@ -1,7 +1,7 @@
-import { app } from './server';
+import { initialize } from './server';
 import * as request from 'supertest';
 
-request(app)
+request(initialize(null, null))
   .post('/client')
   .send({
     endpoint: 'https://example.com',

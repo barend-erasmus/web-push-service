@@ -42,7 +42,7 @@ export class SubscriptionRouter {
 
     const subscriptionRepository: ISubscriptionRepository = request['subscriptionRepository'];
 
-    const existingSubscription: Subscription = await subscriptionRepository.find(key, channel, subscription.endpoint);
+    const existingSubscription: Subscription = await subscriptionRepository.find(client.key, channel, subscription.endpoint);
 
     if (existingSubscription) {
       await subscriptionRepository.delete(client.key, channel, existingSubscription.endpoint);
@@ -52,7 +52,7 @@ export class SubscriptionRouter {
   }
 
   public static async post(request: express.Request, response: express.Response): Promise<void> {
-    if (SubscriptionPostRequestValidator.validateParams(request.params)) {
+    if (!SubscriptionPostRequestValidator.validateParams(request.params)) {
       response.status(400).json({
         message: `Invalid Request Parameters`,
       });
@@ -60,7 +60,7 @@ export class SubscriptionRouter {
       return;
     }
 
-    if (SubscriptionPostRequestValidator.validateBody(request.body)) {
+    if (!SubscriptionPostRequestValidator.validateBody(request.body)) {
       response.status(400).json({
         message: `Invalid Request Body`,
       });
@@ -86,7 +86,7 @@ export class SubscriptionRouter {
 
     const subscriptionRepository: ISubscriptionRepository = request['subscriptionRepository'];
 
-    const existingSubscription: Subscription = await subscriptionRepository.find(key, channel, subscription.endpoint);
+    const existingSubscription: Subscription = await subscriptionRepository.find(client.key, channel, subscription.endpoint);
 
     if (!existingSubscription) {
       await subscriptionRepository.insert(client.key, channel, subscription);

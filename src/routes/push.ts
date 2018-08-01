@@ -45,7 +45,7 @@ export class PushRouter {
     payload: any,
     subscriptionRepository: ISubscriptionRepository,
   ): Promise<void> {
-    const subscriptions: Array<Subscription> = await subscriptionRepository.findAll(key, channel);
+    const subscriptions: Array<Subscription> = await subscriptionRepository.findAll(client.key, channel);
 
     for (const subscription of subscriptions) {
       try {
@@ -59,7 +59,7 @@ export class PushRouter {
         });
       } catch (error) {
         if (error.statusCode === 410) {
-          await subscriptionRepository.delete(key, channel, subscription.endpoint);
+          await subscriptionRepository.delete(client.key, channel, subscription.endpoint);
         } else {
           throw error;
         }
