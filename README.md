@@ -1,9 +1,5 @@
 # Web Push Service
 
-# WSMQ
-
-Web Socket Message Queue (WSMQ) allows you to send and recieve messages to and from your clients on your website.
-
 ## Getting Started
 
 ### Installing
