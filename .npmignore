@@ -2,4 +2,9 @@ marketing-site
 
 scripts
 
+src
+
 *.dat
+
+prettier.config.js
+tsconfig.json
