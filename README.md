@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-[Libraries] (https://github.com/barend-erasmus/web-push-service/tree/master/src/libraries)
+[Libraries](https://github.com/barend-erasmus/web-push-service/tree/master/src/libraries)
 
 ## Quick Install
 
