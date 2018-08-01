@@ -5,8 +5,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "build-demo": "tsc & browserify ./dist/demo/main.js --ignore ajv --ignore body-parser --ignore chalk --ignore commander --ignore cors --ignore express --ignore nedb --ignore web-push -s WebPushServiceDemo -o ./src/demo/main.bundle.js & uglifyjs ./src/demo/main.bundle.js -o ./src/demo/main.bundle.min.js & browserify ./dist/demo/service-worker.js --ignore ajv --ignore body-parser --ignore chalk --ignore commander --ignore cors --ignore express --ignore nedb --ignore web-push -s WebPushServiceDemoServiceWorker -o ./src/demo/service-worker.bundle.js & uglifyjs ./src/demo/service-worker.bundle.js -o ./src/demo/service-worker.bundle.min.js",
+    "build": "npm run build-compile & npm run build-bundle & npm run build-optimize",
+    "build-compile": "tsc",
+    "build-bundle": "browserify ./dist/libraries/main.js -o ./dist/libraries/main.bundle.js -s WebPushService & browserify ./dist/demo/service-worker.js -o ./dist/demo/service-worker.bundle.js -s WebPushServiceServiceWorker",
+    "build-optimize": "uglifyjs ./dist/libraries/main.bundle.js -o ./dist/libraries/main.bundle.min.js & uglifyjs ./dist/libraries/service-worker.bundle.js -o ./dist/libraries/service-worker.bundle.min.js",
     "start": "npm run build & node ./dist/main.js start --port 8080",
     "start-demo": "npm run build-demo & http-server -c -1 -o http://localhost:8082/index.html -p 8082 ./src/demo",
     "test": "npm run build & node ./dist/tests.js"

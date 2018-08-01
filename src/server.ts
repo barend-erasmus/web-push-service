@@ -36,7 +36,7 @@ export function initialize(
 
   expressApplication
     .route('/subscription/:channel/:publicKey')
-    .delete(SubscriptionRouter.post)
+    .delete(SubscriptionRouter.delete)
     .post(SubscriptionRouter.post);
 
   return expressApplication;
