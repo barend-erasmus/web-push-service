@@ -28,6 +28,20 @@ export class InMemoryClientRepository implements IClientRepository {
     });
   }
 
+  public async findByPublicKey(publicKey: string): Promise<Client> {
+    return new Promise((resolve: (client: Client) => void, reject: (error: Error) => void) => {
+      InMemoryClientRepository.database.findOne({ publicKey }, (error: Error, document: any) => {
+        if (error) {
+          reject(error);
+
+          return;
+        }
+
+        resolve(document);
+      });
+    });
+  }
+
   public async insert(client: Client): Promise<void> {
     InMemoryClientRepository.database.insert(client);
   }

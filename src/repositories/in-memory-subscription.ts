@@ -1,32 +1,72 @@
 import { ISubscriptionRepository } from '../interfaces/subscription-repository';
 import { Subscription } from '../models/subscription';
+import * as NeDB from 'nedb';
 
 export class InMemorySubscriptionRepository implements ISubscriptionRepository {
-  protected static keys: {} = {};
-   
-  protected static subscriptions: Array<Subscription> = [];
+  protected static database: any = null;
 
-  public async delete(key: string, endpoint: string): Promise<void> {
-    const subscription: Subscription = await this.find(key, endpoint);
-
-    const index: number = InMemorySubscriptionRepository.subscriptions.indexOf(subscription);
-
-    if (index > -1) {
-      InMemorySubscriptionRepository.subscriptions.splice(index, 1);
+  constructor() {
+    if (!InMemorySubscriptionRepository.database) {
+      InMemorySubscriptionRepository.database = new NeDB({
+        autoload: true,
+        filename: './subscriptions',
+      });
     }
   }
 
-  public async find(key: string, endpoint: string): Promise<Subscription> {
-    return InMemorySubscriptionRepository.subscriptions.find(
-      (subscription: Subscription) => subscription.endpoint === endpoint,
-    );
+  public delete(key: string, channel: string, endpoint: string): Promise<void> {
+    return new Promise((resolve: () => void, reject: (error: Error) => void) => {
+      InMemorySubscriptionRepository.database.remove(
+        { key, channel, 'subscription.endpoint': endpoint },
+        (error: Error, document: any) => {
+          if (error) {
+            reject(error);
+
+            return;
+          }
+
+          resolve();
+        },
+      );
+    });
   }
 
-  public async findAll(key: string, channel: string): Promise<Array<Subscription>> {
-    return InMemorySubscriptionRepository.subscriptions;
+  public async find(key: string, channel: string, endpoint: string): Promise<Subscription> {
+    return new Promise((resolve: (subscription: Subscription) => void, reject: (error: Error) => void) => {
+      InMemorySubscriptionRepository.database.findOne(
+        { key, channel, 'subscription.endpoint': endpoint },
+        (error: Error, document: any) => {
+          if (error) {
+            reject(error);
+
+            return;
+          }
+
+          resolve(document.subscription);
+        },
+      );
+    });
+  }
+
+  public findAll(key: string, channel: string): Promise<Array<Subscription>> {
+    return new Promise((resolve: (subscriptions: Array<Subscription>) => void, reject: (error: Error) => void) => {
+      InMemorySubscriptionRepository.database.find({ key, channel }, (error: Error, documents: Array<any>) => {
+        if (error) {
+          reject(error);
+
+          return;
+        }
+
+        resolve(documents.map((document: any) => document.subscription));
+      });
+    });
   }
 
   public async insert(key: string, channel: string, subscription: Subscription): Promise<void> {
-    InMemorySubscriptionRepository.subscriptions.push(subscription);
+    InMemorySubscriptionRepository.database.insert({
+      channel,
+      key,
+      subscription,
+    });
   }
 }

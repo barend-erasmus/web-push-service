@@ -3,9 +3,9 @@ import { InMemorySubscriptionRepository } from './repositories/in-memory-subscri
 import { InMemoryClientRepository } from './repositories/in-memory-client';
 import * as bodyParser from 'body-parser';
 import { SubscriptionRouter } from './routes/subscription';
-import { AuthenticateRouter } from './routes/authenticate';
 import { PushRouter } from './routes/push';
 import * as cors from 'cors';
+import { ClientRouter } from './routes/client';
 
 const app = express();
 
@@ -20,10 +20,13 @@ app.use((request: express.Request, response: express.Response, next: express.Nex
   next();
 });
 
-app.route('/authenticate/key').get(AuthenticateRouter.key);
+app.route('/client').post(ClientRouter.post);
 
 app.route('/push/:channel').post(PushRouter.post);
 
-app.route('/subscription/:channel').post(SubscriptionRouter.post);
+app
+  .route('/subscription/:channel/:publicKey')
+  .delete(SubscriptionRouter.post)
+  .post(SubscriptionRouter.post);
 
 export { app };
