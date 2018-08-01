@@ -6,6 +6,7 @@ import * as cors from 'cors';
 import { ClientRouter } from './routes/client';
 import { IClientRepository } from './interfaces/client-repository';
 import { ISubscriptionRepository } from './interfaces/subscription-repository';
+import * as path from 'path';
 
 export function initialize(
   clientRepository: IClientRepository,
@@ -13,11 +14,7 @@ export function initialize(
 ): express.Application {
   const expressApplication: express.Application = express();
 
-  expressApplication.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
-    console.log(`${request.method}: ${request.url}`);
-
-    next();
-  });
+  expressApplication.use('/static', express.static(path.join(__dirname, 'libraries')))
 
   expressApplication.use(cors());
 
