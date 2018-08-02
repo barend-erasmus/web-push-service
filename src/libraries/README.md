@@ -1,7 +1,7 @@
 # Web Push Service Libraries
 
 ```html
-<script src="<insert-your-web-push-service-host-here>/static/main.bundle.min.js"></script>
+<script src="<insert-your-web-push-service-host-here>/scripts/main.bundle.min.js"></script>
 ```
 
 ```javascript

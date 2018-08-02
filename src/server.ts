@@ -14,7 +14,7 @@ export function initialize(
 ): express.Application {
   const expressApplication: express.Application = express();
 
-  expressApplication.use('/static', express.static(path.join(__dirname, 'libraries')))
+  expressApplication.use('/api/scripts', express.static(path.join(__dirname, 'libraries')))
 
   expressApplication.use(cors());
 
@@ -27,12 +27,12 @@ export function initialize(
     next();
   });
 
-  expressApplication.route('/client').post(ClientRouter.post);
+  expressApplication.route('/api/client').post(ClientRouter.post);
 
-  expressApplication.route('/push/:channel').post(PushRouter.post);
+  expressApplication.route('/api/push/:channel').post(PushRouter.post);
 
   expressApplication
-    .route('/subscription/:channel/:publicKey')
+    .route('/api/subscription/:channel/:publicKey')
     .delete(SubscriptionRouter.delete)
     .post(SubscriptionRouter.post);
 

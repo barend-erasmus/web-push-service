@@ -9,7 +9,7 @@ function hasPushManagerFunctionality(): boolean {
 }
 
 function registerServiceWorker(): void {
-  navigator.serviceWorker.register('service-worker.bundle.min.js');
+  navigator.serviceWorker.register(`service-worker.bundle.min.js`);
 }
 
 export async function subscribe(channel: string, pushSubscription: PushSubscription = null): Promise<void> {
