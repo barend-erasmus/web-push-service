@@ -9,7 +9,7 @@ function hasPushManagerFunctionality(): boolean {
 }
 
 function registerServiceWorker(): void {
-  navigator.serviceWorker.register(`service-worker.bundle.min.js`);
+  navigator.serviceWorker.register(state.serviceWorkerScriptURL);
 }
 
 export async function subscribe(channel: string, pushSubscription: PushSubscription = null): Promise<void> {
@@ -44,17 +44,19 @@ const state: any = {
   publicKey: null,
   webPushServiceHost: null,
   serviceWorkerRegistration: null,
+  serviceWorkerScriptURL: null,
 };
 
-export async function initialize(publicKey: string, webPushServiceHost: string): Promise<void> {
+export async function initialize(publicKey: string, serviceWorkerScriptURL: string, webPushServiceHost: string): Promise<void> {
   state.publicKey = publicKey;
+  state.serviceWorkerScriptURL = serviceWorkerScriptURL;
   state.webPushServiceHost = webPushServiceHost;
 
   if (hasServiceWorkerFunctionality() && hasPushManagerFunctionality()) {
     registerServiceWorker();
 
     state.serviceWorkerRegistration = await navigator.serviceWorker.ready;
-
+    
     const pushSubscription: PushSubscription = await state.serviceWorkerRegistration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: PushManagerHelper.publicKeyToApplicationServerKey(state.publicKey),

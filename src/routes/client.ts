@@ -1,9 +1,9 @@
 import * as express from 'express';
 import * as uuid from 'uuid';
 import { IClientRepository } from '../interfaces/client-repository';
-import * as webpush from 'web-push';
 import { Client } from '../models/client';
 import { ClientPostRequestValidator } from '../validators/requests/client-post';
+import { WebPushHelper } from '../helpers/web-push';
 
 export class ClientRouter {
   public static async post(request: express.Request, response: express.Response): Promise<void> {
@@ -23,15 +23,18 @@ export class ClientRouter {
 
     clientRepository.insert(client);
 
-    response.json(client);
+    response.json({
+      key: client.key,
+      publicKey: client.publicKey,
+    });
   }
 
   protected static generateNewClient(endpoint: string): Client {
     const key: string = uuid.v4();
 
-    const vapidDetails: any = webpush.generateVAPIDKeys();
+    const vapidKeys: any = WebPushHelper.generateVAPIDKeys();
 
-    const client: Client = new Client(key, vapidDetails.publicKey, vapidDetails.privateKey, endpoint);
+    const client: Client = new Client(key, vapidKeys.publicKey, vapidKeys.privateKey, endpoint);
 
     return client;
   }

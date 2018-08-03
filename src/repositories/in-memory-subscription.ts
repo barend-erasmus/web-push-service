@@ -31,7 +31,7 @@ export class InMemorySubscriptionRepository implements ISubscriptionRepository {
     });
   }
 
-  public async find(key: string, channel: string, endpoint: string): Promise<Subscription> {
+  public find(key: string, channel: string, endpoint: string): Promise<Subscription> {
     return new Promise((resolve: (subscription: Subscription) => void, reject: (error: Error) => void) => {
       InMemorySubscriptionRepository.database.findOne(
         { key, channel, 'subscription.endpoint': endpoint },

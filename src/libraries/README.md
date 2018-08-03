@@ -5,5 +5,5 @@
 ```
 
 ```javascript
-WebPushService.initialize('<insert-your-public-key-here>', '<insert-your-web-push-service-host-here>');
+WebPushService.initialize('<insert-your-public-key-here>', '<insert-your-service-worker-script-here>', '<insert-your-web-push-service-host-here>');
 ```

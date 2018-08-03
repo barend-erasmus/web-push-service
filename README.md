@@ -21,6 +21,7 @@ Usage: start [options]
 
   Options:
 
+    -m --mongo <host>   Mongo
     -p --port <port>    Port
     -h, --help          output usage information
 ```
