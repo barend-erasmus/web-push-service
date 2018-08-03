@@ -3,12 +3,18 @@ import { Client } from '../models/client';
 import * as mongodb from 'mongodb';
 
 export class MongoClientRepository implements IClientRepository {
+  protected static client: mongodb.MongoClient = null;
+
   protected static database: mongodb.Collection = null;
 
   constructor(protected host: string) {
     if (!MongoClientRepository.database) {
       this.initialize();
     }
+  }
+
+  public close(): void {
+    MongoClientRepository.client.close();
   }
 
   public async find(key: string): Promise<Client> {
@@ -35,13 +41,19 @@ export class MongoClientRepository implements IClientRepository {
     await MongoClientRepository.database.insert(client);
   }
 
+  public wait(): Promise<void> {
+    return new Promise((resolve: () => void) => {
+      setTimeout(resolve, 1100);
+    });
+  }
+
   protected async initialize(): Promise<void> {
-    const client: mongodb.MongoClient = await mongodb.connect(
+    MongoClientRepository.client = await mongodb.connect(
       this.host,
       { useNewUrlParser: true },
     );
 
-    const database: mongodb.Db = client.db('web-push-service');
+    const database: mongodb.Db = MongoClientRepository.client.db('web-push-service');
 
     MongoClientRepository.database = database.collection('clients');
   }

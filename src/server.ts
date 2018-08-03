@@ -14,7 +14,7 @@ export function initialize(
 ): express.Application {
   const expressApplication: express.Application = express();
 
-  expressApplication.use('/api/scripts', express.static(path.join(__dirname, 'libraries')))
+  expressApplication.use('/api/scripts', express.static(path.join(__dirname, 'libraries')));
 
   expressApplication.use(cors());
 
@@ -28,6 +28,8 @@ export function initialize(
   });
 
   expressApplication.route('/api/client').post(ClientRouter.post);
+
+  expressApplication.route('/api/client/channels').get(ClientRouter.channelsGet);
 
   expressApplication.route('/api/push/:channel').post(PushRouter.post);
 

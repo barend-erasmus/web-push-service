@@ -5,6 +5,8 @@ scripts
 
 src
 
+tests
+
 *.dat
 
 prettier.config.js

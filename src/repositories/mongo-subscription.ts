@@ -3,12 +3,18 @@ import { Subscription } from '../models/subscription';
 import * as mongodb from 'mongodb';
 
 export class MongoSubscriptionRepository implements ISubscriptionRepository {
+  protected static client: mongodb.MongoClient = null;
+
   protected static database: mongodb.Collection = null;
 
   constructor(protected host: string) {
     if (!MongoSubscriptionRepository.database) {
       this.initialize();
     }
+  }
+
+  public close(): void {
+    MongoSubscriptionRepository.client.close();
   }
 
   public async delete(key: string, channel: string, endpoint: string): Promise<void> {
@@ -41,10 +47,20 @@ export class MongoSubscriptionRepository implements ISubscriptionRepository {
   }
 
   public async findChannels(key: string): Promise<Array<string>> {
-    // TODO: Group
-    const documents: Array<any> = await MongoSubscriptionRepository.database.find({ key }).toArray();
+    const documents: Array<any> = await MongoSubscriptionRepository.database.aggregate([
+      {
+        $match: {
+          key,
+        }
+      },
+      {
+        $group: {
+          _id: '$channel',
+        }
+      }
+    ]).toArray();
 
-    return documents.map((document: any) => document.channel);
+    return documents.map((document: any) => document._id);
   }
 
   public async insert(key: string, channel: string, subscription: Subscription): Promise<void> {
@@ -55,13 +71,19 @@ export class MongoSubscriptionRepository implements ISubscriptionRepository {
     });
   }
 
+  public wait(): Promise<void> {
+    return new Promise((resolve: () => void) => {
+      setTimeout(resolve, 1100);
+    });
+  }
+
   protected async initialize(): Promise<void> {
-    const client: mongodb.MongoClient = await mongodb.connect(
+    MongoSubscriptionRepository.client = await mongodb.connect(
       this.host,
       { useNewUrlParser: true },
     );
 
-    const database: mongodb.Db = client.db('web-push-service');
+    const database: mongodb.Db = MongoSubscriptionRepository.client.db('web-push-service');
 
     MongoSubscriptionRepository.database = database.collection('subcriptions');
   }

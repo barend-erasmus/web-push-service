@@ -1,6 +1,7 @@
 import { ISubscriptionRepository } from '../interfaces/subscription-repository';
 import { Subscription } from '../models/subscription';
 import * as NeDB from 'nedb';
+import { ArrayHelper } from '../helpers/array';
 
 export class InMemorySubscriptionRepository implements ISubscriptionRepository {
   protected static database: any = null;
@@ -77,8 +78,9 @@ export class InMemorySubscriptionRepository implements ISubscriptionRepository {
           return;
         }
 
-        // TODO: Group
-        resolve(documents.map((document: any) => document.channel));
+        const result: Array<string> = ArrayHelper.distinct(documents.map((document: any) => document.channel));
+
+        resolve(result);
       });
     });
   }
