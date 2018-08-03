@@ -7,5 +7,7 @@ export interface ISubscriptionRepository {
 
   findAll(key: string, channel: string): Promise<Array<Subscription>>;
 
+  findChannels(key: string): Promise<Array<string>>;
+
   insert(key: string, channel: string, subscription: Subscription): Promise<void>;
 }

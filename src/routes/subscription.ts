@@ -42,7 +42,11 @@ export class SubscriptionRouter {
 
     const subscriptionRepository: ISubscriptionRepository = request['subscriptionRepository'];
 
-    const existingSubscription: Subscription = await subscriptionRepository.find(client.key, channel, subscription.endpoint);
+    const existingSubscription: Subscription = await subscriptionRepository.find(
+      client.key,
+      channel,
+      subscription.endpoint,
+    );
 
     if (existingSubscription) {
       await subscriptionRepository.delete(client.key, channel, existingSubscription.endpoint);
@@ -86,7 +90,11 @@ export class SubscriptionRouter {
 
     const subscriptionRepository: ISubscriptionRepository = request['subscriptionRepository'];
 
-    const existingSubscription: Subscription = await subscriptionRepository.find(client.key, channel, subscription.endpoint);
+    const existingSubscription: Subscription = await subscriptionRepository.find(
+      client.key,
+      channel,
+      subscription.endpoint,
+    );
 
     if (!existingSubscription) {
       await subscriptionRepository.insert(client.key, channel, subscription);

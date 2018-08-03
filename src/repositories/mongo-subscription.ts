@@ -40,6 +40,13 @@ export class MongoSubscriptionRepository implements ISubscriptionRepository {
     );
   }
 
+  public async findChannels(key: string): Promise<Array<string>> {
+    // TODO: Group
+    const documents: Array<any> = await MongoSubscriptionRepository.database.find({ key }).toArray();
+
+    return documents.map((document: any) => document.channel);
+  }
+
   public async insert(key: string, channel: string, subscription: Subscription): Promise<void> {
     await MongoSubscriptionRepository.database.insert({
       channel,

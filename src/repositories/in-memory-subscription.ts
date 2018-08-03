@@ -68,6 +68,21 @@ export class InMemorySubscriptionRepository implements ISubscriptionRepository {
     });
   }
 
+  public findChannels(key: string): Promise<Array<string>> {
+    return new Promise((resolve: (subscriptions: Array<string>) => void, reject: (error: Error) => void) => {
+      InMemorySubscriptionRepository.database.find({ key }, (error: Error, documents: Array<any>) => {
+        if (error) {
+          reject(error);
+
+          return;
+        }
+
+        // TODO: Group
+        resolve(documents.map((document: any) => document.channel));
+      });
+    });
+  }
+
   public async insert(key: string, channel: string, subscription: Subscription): Promise<void> {
     InMemorySubscriptionRepository.database.insert({
       channel,
