@@ -11,7 +11,7 @@
     "build-optimize": "uglifyjs ./dist/libraries/main.bundle.js -o ./dist/libraries/main.bundle.min.js & uglifyjs ./dist/libraries/service-worker.bundle.js -o ./dist/libraries/service-worker.bundle.min.js",
     "start": "npm run build & node ./dist/main.js start --port 8080",
     "start-demo": "http-server -c -1 -o http://localhost:8081/index.html -p 8081 ./src/libraries",
-    "test": "mocha --require ts-node/register ./tests/**/*.spec.ts"
+    "test": "npm outdated & npm run build & mocha --require ts-node/register ./tests/**/*.spec.ts"
   },
   "repository": {
     "type": "git",

@@ -1,5 +1,7 @@
 # Web Push Service
 
+![Travis CI](https://travis-ci.org/barend-erasmus/web-push-service.svg?branch=master)
+
 ## Getting Started
 
 [Libraries](https://github.com/barend-erasmus/web-push-service/tree/master/src/libraries)
