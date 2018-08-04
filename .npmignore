@@ -1,5 +1,6 @@
-management-ui
 marketing-ui
+
+sample
 
 scripts
 
@@ -10,4 +11,5 @@ tests
 *.dat
 
 prettier.config.js
+
 tsconfig.json
