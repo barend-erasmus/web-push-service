@@ -11,6 +11,7 @@ import * as yaml from 'js-yaml';
 import * as swaggerUI from 'swagger-ui-express';
 import { AuthorizationMiddleware } from './middleware/authorization';
 import * as fs from 'fs';
+import { ClientService } from './services/client';
 
 export function initialize(
   clientRepository: IClientRepository,
@@ -27,6 +28,10 @@ export function initialize(
   expressApplication.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
     request['clientRepository'] = clientRepository;
     request['subscriptionRepository'] = subscriptionRepository;
+
+    request['clientService'] = new ClientService(clientRepository, subscriptionRepository);
+    request['pushService'] = null;
+    request['subscriptionService'] = null;
 
     next();
   });

@@ -1,11 +1,8 @@
 import * as express from 'express';
-import * as uuid from 'uuid';
-import { IClientRepository } from '../interfaces/client-repository';
 import { Client } from '../models/client';
 import { ClientPostRequestValidator } from '../validators/requests/client-post';
-import { WebPushHelper } from '../helpers/web-push';
-import { ISubscriptionRepository } from '../interfaces/subscription-repository';
 import { ClientService } from '../services/client';
+import { PushManagerHelper } from '../helpers/push-manager';
 
 export class ClientRouter {
   public static async post(request: express.Request, response: express.Response): Promise<void> {
@@ -24,6 +21,7 @@ export class ClientRouter {
     const client: Client = await clientService.create(endpoint);
 
     response.json({
+      applicationServerKey: PushManagerHelper.publicKeyToApplicationServerKey(client.publicKey),
       key: client.key,
       publicKey: client.publicKey,
     });

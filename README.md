@@ -6,8 +6,8 @@ Host your own Web Push Service.
 
 ## Table of contents
 
-- [Getting Started](#getting-started)
-- [Installation](#installation)
+- [Deployment](#deployment)
+- [Installation as CLI](#installation-as-cli)
 - [Usage](#usage)
 - [Dependencies](#dependencies)
 - [Authors](#authors)
@@ -17,12 +17,10 @@ Host your own Web Push Service.
 
 ### Production Environment
 
-For development or testing purposes, the web push service can be deployed using port `8080` and a file-based embedded database.
-
 **Prerequisites**
 
-- Linux Machine with Ubuntu. Get $10 to spend at [Digital Ocean](https://m.do.co/c/c72a0c1661d7)
-- Domain Name. [Namecheap](https://www.namecheap.com)
+- Linux Machine with Ubuntu. Get $10 to spend at [Digital Ocean](https://m.do.co/c/c72a0c1661d7).
+- Domain Name. [Namecheap](https://www.namecheap.com).
 
 **Setup**
 
