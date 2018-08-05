@@ -42,9 +42,9 @@ Web Push Notifications can only be used on websites using [HTTPS](https://develo
 - Connect to your Linux Machine via SSH using your preferred client.
 - Install [Let's Encrypt](https://letsencrypt.org) by running `sudo apt-get install -y letsencrypt`.
 - Obtain SSL Certificates for your domain by running `sudo letsencrypt certonly --standalone --agree-tos --email your-email-address -d your-domain.com`.
-- Install [NGINX](https://www.nginx.com) by running `sudo apt install -y nginx`.
+- Install [NGINX](https://www.nginx.com) by running `sudo curl -s https://raw.githubusercontent.com/barend-erasmus/web-push-service/master/scripts/linux-systemd-install.sh | your-domain.com`.
 
-Browse `https://your-domain.com:8080` to view the [Swagger UI](https://swagger.io)
+Browse `https://your-domain.com` to view the [Swagger UI](https://swagger.io)
 
 ![swagger](https://github.com/barend-erasmus/web-push-service/raw/master/images/swagger.png)
 
@@ -54,7 +54,9 @@ See [Sample](https://github.com/barend-erasmus/web-push-service/tree/master/samp
 
 ## Sending Web Push Notifications
 
-Coming Soon
+**cURL**
+
+`curl -d '{ "image": "https://via.placeholder.com/50x50", "message": "My first message", "title": "Hello World", "url": "https://example.com" }' -H "Authorization: key <your-key-here>" -H "Content-Type: application/json" -X POST https://your-domain.com/api/push`
 
 ## Installation as CLI
 
@@ -67,6 +69,7 @@ Usage: start [options]
 
   Options:
 
+    -h --host <host>    Host
     -m --mongo <host>   Mongo
     -p --port <port>    Port
     -h, --help          output usage information

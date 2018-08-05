@@ -55,9 +55,9 @@ async function initialize() {
 
 const state = {
   applicationServerKey: '<your-application-server-key-here>',
-  publicKey: '<your-public-key-here',
+  publicKey: '<your-public-key-here>',
   serviceWorkerRegistration: null,
-  webPushServiceHost: 'https://<your-ip-address-of-linux-machine-here>/api',
+  webPushServiceHost: 'https://<your-domain-here>/api',
 };
 
 initialize();
