@@ -24,7 +24,7 @@ async function subscribe(channel, pushSubscription = null) {
   });
 }
 
-export async function unsubscribe(channel, pushSubscription = null) {
+async function unsubscribe(channel, pushSubscription = null) {
   if (!pushSubscription) {
     pushSubscription = await state.serviceWorkerRegistration.pushManager.getSubscription();
   }

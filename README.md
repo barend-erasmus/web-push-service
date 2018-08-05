@@ -7,9 +7,12 @@ Host your own Web Push Service.
 ## Table of contents
 
 - [Deployment](#deployment)
+- [Subscribing to Channels](#subscribing-to-channels)
+- [Sending Web Push Notifications](#sending-web-push-notifications)
 - [Installation as CLI](#installation-as-cli)
 - [Usage](#usage)
 - [Dependencies](#dependencies)
+- [Contribute](#contribute)
 - [Authors](#authors)
 - [License](#license)
 
@@ -97,7 +100,11 @@ Browse `https://your-domain.com:8080` to view the [Swagger UI](https://swagger.i
 
 ![swagger](https://github.com/barend-erasmus/web-push-service/raw/master/images/swagger.png)
 
-## Subscribing to channels
+## Subscribing to Channels
+
+See [Sample](https://github.com/barend-erasmus/web-push-service/tree/master/sample)
+
+## Sending Web Push Notifications
 
 Coming Soon
 
