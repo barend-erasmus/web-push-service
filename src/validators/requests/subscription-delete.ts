@@ -37,9 +37,8 @@ export class SubscriptionDeleteRequestValidator {
       type: 'object',
       properties: {
         channel: { type: 'string' },
-        publicKey: { type: 'string' },
       },
-      required: ['channel', 'publicKey'],
+      required: ['channel'],
     };
 
     const ajv = new AJV();

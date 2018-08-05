@@ -1,7 +1,7 @@
 function publicKeyToApplicationServerKey(publicKey) {
-  const publicKeyBase64 = PushManagerHelper.publicKeyToBase64(publicKey);
+  const publicKeyBase64 = publicKeyToBase64(publicKey);
 
-  const publicKeyBase64Decoded = PushManagerHelper.decodeBase64(publicKeyBase64);
+  const publicKeyBase64Decoded = decodeBase64(publicKeyBase64);
 
   const array = new Uint8Array(publicKeyBase64Decoded.length);
 
@@ -40,9 +40,10 @@ async function subscribe(channel, pushSubscription = null) {
     pushSubscription = await state.serviceWorkerRegistration.pushManager.getSubscription();
   }
 
-  await fetch(`${state.webPushServiceHost}/subscription/${channel}/${state.publicKey}`, {
+  await fetch(`${state.webPushServiceHost}/subscription/${channel}`, {
     body: JSON.stringify(pushSubscription.toJSON()),
     headers: {
+      Authorization: state.publicKey,
       'Content-Type': 'application/json',
     },
     method: 'POST',
@@ -54,14 +55,29 @@ async function unsubscribe(channel, pushSubscription = null) {
     pushSubscription = await state.serviceWorkerRegistration.pushManager.getSubscription();
   }
 
-  await fetch(`${state.webPushServiceHost}/subscription/${channel}/${state.publicKey}`, {
+  await fetch(`${state.webPushServiceHost}/subscription/${channel}`, {
     body: JSON.stringify(pushSubscription.toJSON()),
     headers: {
+      Authorization: state.publicKey,
       'Content-Type': 'application/json',
     },
     method: 'DELETE',
   });
 }
+
+// async function sendNotification(message, title) {
+//   await fetch(`${state.webPushServiceHost}/push/default`, {
+//     body: JSON.stringify({
+//       message,
+//       title,
+//     }),
+//     headers: {
+//       Authorization: '<your-key-here',
+//       'Content-Type': 'application/json',
+//     },
+//     method: 'POST',
+//   });
+// }
 
 async function initialize() {
   if (hasServiceWorkerFunctionality() && hasPushManagerFunctionality()) {

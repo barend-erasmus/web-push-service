@@ -46,7 +46,7 @@ export function initialize(
   expressApplication.route('/api/push/:channel').post(AuthorizationMiddleware.build(), PushRouter.post);
 
   expressApplication
-    .route('/api/subscription/:channel/:publicKey')
+    .route('/api/subscription/:channel')
     .delete(AuthorizationMiddleware.build(), SubscriptionRouter.delete)
     .post(AuthorizationMiddleware.build(), SubscriptionRouter.post);
 

@@ -11,35 +11,25 @@ export class AuthorizationMiddleware {
     return async (request: express.Request, response: express.Response, next: express.NextFunction) => {
       const clientRepository: IClientRepository = request['clientRepository'];
 
-      const publicKey: string = request.params.publicKey;
+      const keyOrPublicKey: string = request.get('authorization');
 
-      if (publicKey) {
-        const client: Client = await clientRepository.findByPublicKey(publicKey);
-
-        request['client'] = client;
-
-        next();
-
-        return;
-      }
-
-      const key: string = request.get('authorization');
-
-      if (!key) {
+      if (!keyOrPublicKey) {
         response.status(401).end();
 
         return;
       }
 
-      const client: Client = await clientRepository.find(key);
+      const clientByKey: Client = await clientRepository.find(keyOrPublicKey);
 
-      if (!client) {
+      const clientByPublicKey: Client = await clientRepository.findByPublicKey(keyOrPublicKey);
+
+      if (!clientByKey && !clientByPublicKey) {
         response.status(401).end();
 
         return;
       }
 
-      request['client'] = client;
+      request['client'] = clientByKey || clientByPublicKey;
 
       next();
     };
