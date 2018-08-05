@@ -15,27 +15,44 @@ Host your own Web Push Service.
 
 ## Deployment
 
-### Development/Testing Enviromnent
+### Production Environment
 
 For development or testing purposes, the web push service can be deployed using port `8080` and a file-based embedded database.
 
 **Prerequisites**
 
-- Linux Machine with Ubuntu
+- Linux Machine with Ubuntu. Get $10 to spend at [Digital Ocean](https://m.do.co/c/c72a0c1661d7)
+- Domain Name. [Namecheap](https://www.namecheap.com)
 
 **Setup**
 
 - Connect to your Linux Machine via SSH using your preferred client.
 - Install [node.js](https://nodejs.org) by using the [guide](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions) on their website.
-- Install `Web Push Service` via [npm](https://www.npmjs.com) by running `npm install -g web-push-service`
-- Configure `Web Push Service` as a [systemd](https://www.freedesktop.org/wiki/Software/systemd) service by running `curl -s https://raw.githubusercontent.com/barend-erasmus/web-push-service/master/scripts/linux-systemd-install.sh | bash`
+- Install `Web Push Service` via [npm](https://www.npmjs.com) by running `npm install -g web-push-service`.
+- Configure `Web Push Service` as a [systemd](https://www.freedesktop.org/wiki/Software/systemd) service by running `curl -s https://raw.githubusercontent.com/barend-erasmus/web-push-service/master/scripts/linux-systemd-install.sh | bash`.
 
-Browse [http://<ip-address>:8080](http://localhost:8080) to view the [Swagger UI](https://swagger.io)
+
+**HTTPS**
+
+Web Push Notifications can only be used on websites using [HTTPS](https://developers.google.com/web/fundamentals/push-notifications) and therefore we'll need to configure a reverse proxy with (SSL Certificates](https://letsencrypt.org).
+
+**Setup HTTPS**
+
+- Connect to your Linux Machine via SSH using your preferred client.
+- Install [Let's Encrypt](https://letsencrypt.org) by running `apt-get install -y letsencrypt`.
+- Obtain SSL Certificates for your domain by running `letsencrypt certonly --standalone --agree-tos --email your-email-address -d your-domain.com`.
+- Install [NGINX](https://www.nginx.com) by running `apt install -y nginx`.
+- Configure firewall for [NGINX](https://www.nginx.com) by running `ufw allow 'Nginx Full'`.
+- Configure [NGINX](https://www.nginx.com) to start on boot by running `systemctl enable nginx`.
+
+TODO
+
+Browse `https://your-domain.com:8080` to view the [Swagger UI](https://swagger.io)
 
 ![swagger](https://github.com/barend-erasmus/web-push-service/raw/master/images/swagger.png)
 
 
-### Production
+## Subscribing to channels
 
 Coming Soon
 
