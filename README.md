@@ -1,19 +1,17 @@
 # Web Push Service
 
 ![Travis CI](https://travis-ci.org/barend-erasmus/web-push-service.svg?branch=master) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+
 Host your own Web Push Service.
 
 ## Table of contents
 
-- [Getting Started](#quick-start)
-- [What's included?](#whats-included)
-- [Bugs and feature requests](#bugs-and-feature-requests)
+- [Getting Started](#getting-started)
+- [Installation](#installation)
+- [Usage](#usage)
 - [Dependencies](#dependencies)
-- [Categories](#categories)
-- [Browser support](#browser-support)
-- [Community](#community)
-- [Contributors](#contributors)
-- [Copyright and license](#copyright-and-license)
+- [Authors](#authors)
+- [License](#license)
 
 ## Getting Started
 
