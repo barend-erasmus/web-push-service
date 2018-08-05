@@ -56,7 +56,11 @@ See [Sample](https://github.com/barend-erasmus/web-push-service/tree/master/samp
 
 **cURL**
 
-`curl -d '{ "image": "https://via.placeholder.com/50x50", "message": "My first message", "title": "Hello World", "url": "https://example.com" }' -H "Authorization: key <your-key-here>" -H "Content-Type: application/json" -X POST https://your-domain.com/api/push`
+`curl -d '{ "image": "https://via.placeholder.com/50x50", "message": "My first message", "title": "Hello World", "url": "https://example.com" }' -H "Authorization: <your-key-here>" -H "Content-Type: application/json" -X POST https://your-domain.com/api/push`
+
+## Obtaining Credentials
+
+Coming Soon
 
 ## Installation as CLI
 

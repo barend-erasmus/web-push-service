@@ -1,10 +1,7 @@
 import * as express from 'express';
-import { IClientRepository } from '../interfaces/client-repository';
-import { ISubscriptionRepository } from '../interfaces/subscription-repository';
-import { Subscription } from '../models/subscription';
-import * as webpush from 'web-push';
 import { Client } from '../models/client';
 import { PushPostRequestValidator } from '../validators/requests/push-post';
+import { PushService } from '../services/push';
 
 export class PushRouter {
   public static async post(request: express.Request, response: express.Response): Promise<void> {
@@ -20,50 +17,12 @@ export class PushRouter {
 
     const payload: any = request.body;
 
-    const clientRepository: IClientRepository = request['clientRepository'];
+    const client: Client = request['client'];
 
-    const key: string = request.get('authorization');
+    const pushService: PushService = request['pushService'];
 
-    const client: Client = await clientRepository.find(key);
-
-    if (!client) {
-      response.status(401).end();
-
-      return;
-    }
-
-    const subscriptionRepository: ISubscriptionRepository = request['subscriptionRepository'];
-
-    await PushRouter.sendNotification(channel, client, payload, subscriptionRepository);
+    await pushService.create(client, channel, payload);
 
     response.json('OK');
-  }
-
-  protected static async sendNotification(
-    channel: string,
-    client: Client,
-    payload: any,
-    subscriptionRepository: ISubscriptionRepository,
-  ): Promise<void> {
-    const subscriptions: Array<Subscription> = await subscriptionRepository.findAll(client.key, channel);
-
-    for (const subscription of subscriptions) {
-      try {
-        await webpush.sendNotification(subscription, JSON.stringify(payload), {
-          vapidDetails: {
-            subject: client.endpoint,
-            publicKey: client.publicKey,
-            privateKey: client.privateKey,
-          },
-          TTL: 604800, // 1 Week
-        });
-      } catch (error) {
-        if (error.statusCode === 410) {
-          await subscriptionRepository.delete(client.key, channel, subscription.endpoint);
-        } else {
-          throw error;
-        }
-      }
-    }
   }
 }

@@ -12,6 +12,7 @@ import * as swaggerUI from 'swagger-ui-express';
 import { AuthorizationMiddleware } from './middleware/authorization';
 import * as fs from 'fs';
 import { ClientService } from './services/client';
+import { PushService } from './services/push';
 
 export function initialize(
   clientRepository: IClientRepository,
@@ -31,7 +32,7 @@ export function initialize(
     request['subscriptionRepository'] = subscriptionRepository;
 
     request['clientService'] = new ClientService(clientRepository, subscriptionRepository);
-    request['pushService'] = null;
+    request['pushService'] = new PushService(subscriptionRepository);
     request['subscriptionService'] = null;
 
     next();

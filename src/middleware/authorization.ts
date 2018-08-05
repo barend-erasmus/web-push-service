@@ -11,33 +11,23 @@ export class AuthorizationMiddleware {
     return async (request: express.Request, response: express.Response, next: express.NextFunction) => {
       const clientRepository: IClientRepository = request['clientRepository'];
 
-      const authorizationHeader: string = request.get('authorization');
+      const key: string = request.get('authorization');
 
-      if (!authorizationHeader) {
+      if (!key) {
         response.status(401).end();
 
         return;
       }
 
-      const type: string = authorizationHeader.split(' ')[0];
+      const client: Client = await clientRepository.find(key);
 
-      if (type === 'key') {
-        const key: string = authorizationHeader.split(' ')[1];
-
-        const client: Client = await clientRepository.find(key);
-
-        if (!client) {
-          response.status(401).end();
-
-          return;
-        }
-
-        request['client'] = client;
-      } else {
+      if (!client) {
         response.status(401).end();
 
         return;
       }
+
+      request['client'] = client;
 
       next();
     };
