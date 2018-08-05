@@ -35,7 +35,7 @@ Host your own Web Push Service.
 
 **HTTPS**
 
-Web Push Notifications can only be used on websites using [HTTPS](https://developers.google.com/web/fundamentals/push-notifications) and therefore we'll need to configure a reverse proxy with (SSL Certificates](https://letsencrypt.org).
+Web Push Notifications can only be used on websites using [HTTPS](https://developers.google.com/web/fundamentals/push-notifications) and therefore we'll need to configure a reverse proxy with [SSL Certificates](https://letsencrypt.org).
 
 **Setup HTTPS**
 
