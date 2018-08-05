@@ -30,42 +30,16 @@ For development or testing purposes, the web push service can be deployed using 
 - Install `Web Push Service` via [npm](https://www.npmjs.com) by running `npm install -g web-push-service`
 - Configure `Web Push Service` as a [systemd](https://www.freedesktop.org/wiki/Software/systemd) service by running `curl -s https://raw.githubusercontent.com/barend-erasmus/web-push-service/master/scripts/linux-systemd-install.sh | bash`
 
-Browse to `http://<ip-address>:8080`
+Browse [http://<ip-address>:8080](http://localhost:8080) to view the [Swagger UI](https://swagger.io)
 
-## Getting Started
+![swagger](https://github.com/barend-erasmus/web-push-service/raw/master/images/swagger.png)
+
 
 ### Production
 
-This single-line command will setup a instance of Web Push Service on port `8080` and will use `NeDB` as its database.
+Coming Soon
 
-`sudo curl -s https://raw.githubusercontent.com/barend-erasmus/web-push-service/master/scripts/linux-systemd-install.sh | bash`
-
-**MongoDB**
-
-The database can be changed from `NeDB` to `MongoDB` by changing the SystemD Service File.
-
-`sudo nano /lib/systemd/system/web-push-service.service`
-
-```
-[Unit]
-Description=Web Push Service
-
-[Service]
-Type=simple
-ExecStart=/usr/bin/web-push-service start --mongo mongodb://localhost:27017 --port 8080
-
-[Install]
-WantedBy=multi-user.target
-```
-
-### Development
-
-* Install [Node.js](https://nodejs.org/en/download)
-* Clone this repository - `git clone https://github.com/barend-erasmus/web-push-service.git`
-* Install packages - `npm install`
-* Run - `npm start`
-
-## Installation
+## Installation as CLI
 
 `npm install -g web-push-service`
 
@@ -95,6 +69,10 @@ Usage: start [options]
 * [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) - Swagger UI Express
 * [uuid](https://www.npmjs.com/package/uuid) - RFC4122 (v1, v4, and v5) UUIDs
 * [web-push](https://www.npmjs.com/package/web-push) - Web Push library for Node.js
+
+## Contribute
+
+Coming Soon
 
 ## Authors
 
