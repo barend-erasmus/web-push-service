@@ -5,6 +5,7 @@ import { Client } from '../models/client';
 import { ClientPostRequestValidator } from '../validators/requests/client-post';
 import { WebPushHelper } from '../helpers/web-push';
 import { ISubscriptionRepository } from '../interfaces/subscription-repository';
+import { ClientService } from '../services/client';
 
 export class ClientRouter {
   public static async post(request: express.Request, response: express.Response): Promise<void> {
@@ -18,11 +19,9 @@ export class ClientRouter {
 
     const endpoint: string = request.body.endpoint;
 
-    const clientRepository: IClientRepository = request['clientRepository'];
+    const clientService: ClientService = request['clientService'];
 
-    const client: Client = ClientRouter.generateNewClient(endpoint);
-
-    clientRepository.insert(client);
+    const client: Client = await clientService.create(endpoint);
 
     response.json({
       key: client.key,
@@ -31,32 +30,12 @@ export class ClientRouter {
   }
 
   public static async channelsGet(request: express.Request, response: express.Response): Promise<void> {
-    const clientRepository: IClientRepository = request['clientRepository'];
+    const client: Client = request['client'];
 
-    const key: string = request.get('authorization');
+    const clientService: ClientService = request['clientService'];
 
-    const client: Client = await clientRepository.find(key);
-
-    if (!client) {
-      response.status(401).end();
-
-      return;
-    }
-
-    const subscriptionRepository: ISubscriptionRepository = request['subscriptionRepository'];
-
-    const channels: Array<string> = await subscriptionRepository.findChannels(key);
+    const channels: Array<string> = await clientService.channels(client.key);
 
     response.json(channels);
-  }
-
-  protected static generateNewClient(endpoint: string): Client {
-    const key: string = uuid.v4();
-
-    const vapidKeys: any = WebPushHelper.generateVAPIDKeys();
-
-    const client: Client = new Client(key, vapidKeys.publicKey, vapidKeys.privateKey, endpoint);
-
-    return client;
   }
 }
