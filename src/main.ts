@@ -10,6 +10,7 @@ import { MongoSubscriptionRepository } from './repositories/mongo-subscription';
 
 commander
   .command('start')
+  .option('-h --host <host>', 'Host')
   .option('-m --mongo <host>', 'Mongo')
   .option('-p --port <port>', 'Port')
   .action((command: any) => {
@@ -35,7 +36,7 @@ commander
       subscriptionRepository = new InMemorySubscriptionRepository();
     }
 
-    const expressApplication = initialize(clientRepository, subscriptionRepository);
+    const expressApplication = initialize(clientRepository, subscriptionRepository, command.host? command.host : 'localhost:8080');
 
     expressApplication.listen(command.port);
 

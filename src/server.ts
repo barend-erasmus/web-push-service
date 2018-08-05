@@ -16,6 +16,7 @@ import { ClientService } from './services/client';
 export function initialize(
   clientRepository: IClientRepository,
   subscriptionRepository: ISubscriptionRepository,
+  host: string,
 ): express.Application {
   const expressApplication: express.Application = express();
 
@@ -47,11 +48,11 @@ export function initialize(
     .delete(SubscriptionRouter.delete)
     .post(SubscriptionRouter.post);
 
-  expressApplication.use(
-    '/',
-    swaggerUI.serve,
-    swaggerUI.setup(yaml.safeLoad(fs.readFileSync(path.join(__dirname, '..', 'swagger.yml')))),
-  );
+  const swaggerJson: any = yaml.safeLoad(fs.readFileSync(path.join(__dirname, '..', 'swagger.yml')));
+
+  swaggerJson.host = host;
+
+  expressApplication.use('/', swaggerUI.serve, swaggerUI.setup(swaggerJson));
 
   return expressApplication;
 }

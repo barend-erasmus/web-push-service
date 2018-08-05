@@ -1,16 +1,12 @@
 {
   "name": "web-push-service",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "npm run build-compile & npm run build-bundle & npm run build-optimize",
-    "build-compile": "tsc",
-    "build-bundle": "browserify ./dist/libraries/main.js -o ./dist/libraries/main.bundle.js -s WebPushService & browserify ./dist/libraries/service-worker.js -o ./dist/libraries/service-worker.bundle.js -s WebPushServiceServiceWorker",
-    "build-optimize": "uglifyjs ./dist/libraries/main.bundle.js -o ./dist/libraries/main.bundle.min.js & uglifyjs ./dist/libraries/service-worker.bundle.js -o ./dist/libraries/service-worker.bundle.min.js",
+    "build": "tsc",
     "start": "npm run build & node ./dist/main.js start --port 8080",
-    "start-demo": "http-server -c -1 -o http://localhost:8081/index.html -p 8081 ./src/libraries",
     "test": "mocha --require ts-node/register ./tests/**/*.spec.ts"
   },
   "repository": {
@@ -31,15 +27,13 @@
     "@types/node": "^10.5.6",
     "@types/sinon": "^5.0.1",
     "@types/supertest": "^2.0.5",
-    "browserify": "^16.2.2",
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
     "prettier": "^1.14.0",
     "sinon": "^6.1.4",
     "supertest": "^3.1.0",
     "ts-node": "^7.0.0",
-    "typescript": "^3.0.1",
-    "uglify-es": "^3.3.10"
+    "typescript": "^3.0.1"
   },
   "dependencies": {
     "ajv": "^6.5.2",
