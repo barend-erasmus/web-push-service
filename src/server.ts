@@ -13,6 +13,7 @@ import { AuthorizationMiddleware } from './middleware/authorization';
 import * as fs from 'fs';
 import { ClientService } from './services/client';
 import { PushService } from './services/push';
+import { SubscriptionService } from './services/subscription';
 
 export function initialize(
   clientRepository: IClientRepository,
@@ -33,7 +34,7 @@ export function initialize(
 
     request['clientService'] = new ClientService(clientRepository, subscriptionRepository);
     request['pushService'] = new PushService(subscriptionRepository);
-    request['subscriptionService'] = null;
+    request['subscriptionService'] = new SubscriptionService(subscriptionRepository);
 
     next();
   });
@@ -42,12 +43,12 @@ export function initialize(
 
   expressApplication.route('/api/client/channels').get(AuthorizationMiddleware.build(), ClientRouter.channelsGet);
 
-  expressApplication.route('/api/push/:channel').post(PushRouter.post);
+  expressApplication.route('/api/push/:channel').post(AuthorizationMiddleware.build(), PushRouter.post);
 
   expressApplication
     .route('/api/subscription/:channel/:publicKey')
-    .delete(SubscriptionRouter.delete)
-    .post(SubscriptionRouter.post);
+    .delete(AuthorizationMiddleware.build(), SubscriptionRouter.delete)
+    .post(AuthorizationMiddleware.build(), SubscriptionRouter.post);
 
   const swaggerJson: any = yaml.safeLoad(fs.readFileSync(path.join(__dirname, '..', 'swagger.yml')));
 

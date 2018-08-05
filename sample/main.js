@@ -1,3 +1,28 @@
+function publicKeyToApplicationServerKey(publicKey) {
+  const publicKeyBase64 = PushManagerHelper.publicKeyToBase64(publicKey);
+
+  const publicKeyBase64Decoded = PushManagerHelper.decodeBase64(publicKeyBase64);
+
+  const array = new Uint8Array(publicKeyBase64Decoded.length);
+
+  for (let i = 0; i < publicKeyBase64Decoded.length; ++i) {
+    array[i] = publicKeyBase64Decoded.charCodeAt(i);
+  }
+
+  return array;
+}
+
+function decodeBase64(base64String) {
+  return window.atob(base64String);
+}
+
+function publicKeyToBase64(publicKey) {
+  const padding = '='.repeat((4 - (publicKey.length % 4)) % 4);
+  const result = `${publicKey}${padding}`.replace(/\-/g, '+').replace(/_/g, '/');
+
+  return result;
+}
+
 function hasServiceWorkerFunctionality() {
   return 'serviceWorker' in navigator;
 }
@@ -46,7 +71,7 @@ async function initialize() {
 
     const pushSubscription = await state.serviceWorkerRegistration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: PushManagerHelper.publicKeyToApplicationServerKey(state.publicKey),
+      applicationServerKey: publicKeyToApplicationServerKey(state.publicKey),
     });
 
     await subscribe('default', pushSubscription);
@@ -54,7 +79,6 @@ async function initialize() {
 }
 
 const state = {
-  applicationServerKey: '<your-application-server-key-here>',
   publicKey: '<your-public-key-here>',
   serviceWorkerRegistration: null,
   webPushServiceHost: 'https://<your-domain-here>/api',

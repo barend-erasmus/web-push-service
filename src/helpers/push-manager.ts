@@ -14,7 +14,7 @@ export class PushManagerHelper {
   }
 
   protected static decodeBase64(base64String: string): string {
-    return window.atob(base64String);
+    return Buffer.from(base64String, 'base64').toString();
   }
 
   protected static publicKeyToBase64(publicKey: string): string {

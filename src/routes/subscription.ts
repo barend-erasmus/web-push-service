@@ -1,10 +1,9 @@
 import * as express from 'express';
-import { IClientRepository } from '../interfaces/client-repository';
-import { ISubscriptionRepository } from '../interfaces/subscription-repository';
 import { Subscription } from '../models/subscription';
 import { SubscriptionPostRequestValidator } from '../validators/requests/subscription-post';
 import { Client } from '../models/client';
 import { SubscriptionDeleteRequestValidator } from '../validators/requests/subscription-delete';
+import { SubscriptionService } from '../services/subscription';
 
 export class SubscriptionRouter {
   public static async delete(request: express.Request, response: express.Response): Promise<void> {
@@ -26,31 +25,13 @@ export class SubscriptionRouter {
 
     const channel: string = request.params['channel'];
 
-    const publicKey: string = request.params['publicKey'];
-
     const subscription: Subscription = request.body;
 
-    const clientRepository: IClientRepository = request['clientRepository'];
+    const client: Client = request['client'];
 
-    const client: Client = await clientRepository.findByPublicKey(publicKey);
+    const subscriptionService: SubscriptionService = request['subscriptionService'];
 
-    if (!client) {
-      response.status(401).end();
-
-      return;
-    }
-
-    const subscriptionRepository: ISubscriptionRepository = request['subscriptionRepository'];
-
-    const existingSubscription: Subscription = await subscriptionRepository.find(
-      client.key,
-      channel,
-      subscription.endpoint,
-    );
-
-    if (existingSubscription) {
-      await subscriptionRepository.delete(client.key, channel, existingSubscription.endpoint);
-    }
+    await subscriptionService.delete(client.key, channel, subscription.endpoint);
 
     response.json('OK');
   }
@@ -74,31 +55,13 @@ export class SubscriptionRouter {
 
     const channel: string = request.params['channel'];
 
-    const publicKey: string = request.params['publicKey'];
-
     const subscription: Subscription = request.body;
 
-    const clientRepository: IClientRepository = request['clientRepository'];
+    const client: Client = request['client'];
 
-    const client: Client = await clientRepository.findByPublicKey(publicKey);
+    const subscriptionService: SubscriptionService = request['subscriptionService'];
 
-    if (!client) {
-      response.status(401).end();
-
-      return;
-    }
-
-    const subscriptionRepository: ISubscriptionRepository = request['subscriptionRepository'];
-
-    const existingSubscription: Subscription = await subscriptionRepository.find(
-      client.key,
-      channel,
-      subscription.endpoint,
-    );
-
-    if (!existingSubscription) {
-      await subscriptionRepository.insert(client.key, channel, subscription);
-    }
+    await subscriptionService.insert(client.key, channel, subscription);
 
     response.json('OK');
   }
