@@ -30,7 +30,6 @@
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
     "prettier": "^1.14.0",
-    "proxyquire": "^2.0.1",
     "sinon": "^6.1.4",
     "supertest": "^3.1.0",
     "ts-node": "^7.0.0",

@@ -31,6 +31,18 @@ describe('ClientService', () => {
       const key: string = (subscriptionRepository.findChannels as sinon.SinonSpy).args[0][0];
       expect(key).to.be.eq('my-key');
     });
+
+    it('Should throw error given null key', async () => {
+      const clientService: ClientService = new ClientService(null, null);
+
+      try {
+        await clientService.channels(null);
+
+        throw new Error('Expected Error');
+      } catch (error) {
+        expect(error.message).to.be.eq('Key cannot be null');
+      }
+    });
   });
 
   describe('#create', () => {
@@ -41,7 +53,7 @@ describe('ClientService', () => {
 
       const clientService: ClientService = new ClientService(clientRepository, null);
 
-      await clientService.create(null);
+      await clientService.create('endpoint');
 
       expect((clientRepository.insert as sinon.SinonSpy).calledOnce).to.be.true;
     });
@@ -61,6 +73,18 @@ describe('ClientService', () => {
       expect(client.key).to.be.not.null;
       expect(client.privateKey).to.be.not.null;
       expect(client.publicKey).to.be.not.null;
+    });
+
+    it('Should throw error given null endpoint', async () => {
+      const clientService: ClientService = new ClientService(null, null);
+
+      try {
+        await clientService.create(null);
+
+        throw new Error('Expected Error');
+      } catch (error) {
+        expect(error.message).to.be.eq('Endpoint cannot be null');
+      }
     });
   });
 });

@@ -5,6 +5,18 @@ export class SubscriptionService {
   constructor(protected subscriptionRepository: ISubscriptionRepository) {}
 
   public async delete(key: string, channel: string, endpoint: string): Promise<void> {
+    if (!key) {
+      throw new Error('Key cannot be null');
+    }
+
+    if (!channel) {
+      throw new Error('Channel cannot be null');
+    }
+
+    if (!endpoint) {
+      throw new Error('Endpoint cannot be null');
+    }
+
     const existingSubscription: Subscription = await this.subscriptionRepository.find(key, channel, endpoint);
 
     if (existingSubscription) {

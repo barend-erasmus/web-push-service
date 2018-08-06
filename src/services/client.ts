@@ -11,10 +11,18 @@ export class ClientService {
   ) {}
 
   public channels(key: string): Promise<string[]> {
+    if (!key) {
+      throw new Error('Key cannot be null');
+    }
+
     return this.subscriptionRepository.findChannels(key);
   }
 
   public async create(endpoint: string): Promise<Client> {
+    if (!endpoint) {
+      throw new Error('Endpoint cannot be null');
+    }
+
     const client: Client = this.generateNewClient(endpoint);
 
     await this.clientRepository.insert(client);

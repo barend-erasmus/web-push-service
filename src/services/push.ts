@@ -10,7 +10,17 @@ export class PushService {
     if (!client) {
       throw new Error('Client cannot be null');
     }
-    
+
+    client.validate();
+
+    if (!channel) {
+      throw new Error('Channel cannot be null');
+    }
+
+    if (!payload) {
+      throw new Error('Payload cannot be null');
+    }
+
     const subscriptions: Array<Subscription> = await this.subscriptionRepository.findAll(client.key, channel);
 
     for (const subscription of subscriptions) {
