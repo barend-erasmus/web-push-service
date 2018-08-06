@@ -25,6 +25,20 @@ export class SubscriptionService {
   }
 
   public async insert(key: string, channel: string, subscription: Subscription): Promise<void> {
+    if (!key) {
+      throw new Error('Key cannot be null');
+    }
+
+    if (!channel) {
+      throw new Error('Channel cannot be null');
+    }
+
+    if (!subscription) {
+      throw new Error('Subscription cannot be null');
+    }
+
+    subscription.validate();
+
     const existingSubscription: Subscription = await this.subscriptionRepository.find(
       key,
       channel,
