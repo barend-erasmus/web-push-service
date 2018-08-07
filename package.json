@@ -8,7 +8,7 @@
     "build": "tsc",
     "cover": "tsc & istanbul cover node_modules/mocha/bin/_mocha ./dist/tests/**/*.spec.js",
     "start": "npm run build & node ./dist/src/main.js start --port 8080",
-    "test": "tsc && istanbul cover mocha ./dist/tests/**/*.spec.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "test": "tsc && istanbul cover node_modules/mocha/bin/_moch dist/tests/**/*.spec.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "test-local": "mocha --require ts-node/register ./tests/**/*.spec.ts"
   },
   "repository": {
