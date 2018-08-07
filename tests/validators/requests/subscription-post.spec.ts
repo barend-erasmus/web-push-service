@@ -16,6 +16,19 @@ describe('SubscriptionPostRequestValidator', () => {
       expect(result).to.be.true;
     });
 
+    it('Should return true given null expirationTime', async () => {
+      const result: boolean = SubscriptionPostRequestValidator.validateBody({
+        endpoint: 'endpoint',
+        expirationTime: null,
+        keys: {
+          auth: 'auth',
+          p256dh: 'p256dh',
+        },
+      });
+
+      expect(result).to.be.true;
+    });
+
     it('Should return false given no endpoint', async () => {
       const result: boolean = SubscriptionPostRequestValidator.validateBody({
         expirationTime: 0,

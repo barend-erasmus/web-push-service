@@ -6,7 +6,7 @@ export class SubscriptionPostRequestValidator {
       type: 'object',
       properties: {
         endpoint: { type: 'string' },
-        expirationTime: { type: 'number' },
+        expirationTime: { type: ['number', 'null'] },
         keys: {
           type: 'object',
           properties: {

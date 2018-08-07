@@ -2,7 +2,6 @@ import * as express from 'express';
 import { Client } from '../models/client';
 import { ClientPostRequestValidator } from '../validators/requests/client-post';
 import { ClientService } from '../services/client';
-import { PushManagerHelper } from '../helpers/push-manager';
 
 export class ClientRouter {
   public static async post(request: express.Request, response: express.Response): Promise<void> {
@@ -21,7 +20,6 @@ export class ClientRouter {
     const client: Client = await clientService.create(endpoint);
 
     response.json({
-      applicationServerKey: PushManagerHelper.publicKeyToApplicationServerKey(client.publicKey),
       key: client.key,
       publicKey: client.publicKey,
     });
