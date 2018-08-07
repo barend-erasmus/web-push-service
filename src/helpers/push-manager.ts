@@ -1,5 +1,9 @@
 export class PushManagerHelper {
   public static publicKeyToApplicationServerKey(publicKey: string): Uint8Array {
+    if (!publicKey) {
+      throw new Error('Public Key cannot be null');
+    }
+
     const publicKeyBase64: string = PushManagerHelper.publicKeyToBase64(publicKey);
 
     const publicKeyBase64Decoded: string = PushManagerHelper.decodeBase64(publicKeyBase64);

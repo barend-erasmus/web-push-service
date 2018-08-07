@@ -50,7 +50,7 @@ export function initialize(
     .delete(AuthorizationMiddleware.build(), SubscriptionRouter.delete)
     .post(AuthorizationMiddleware.build(), SubscriptionRouter.post);
 
-  const swaggerJson: any = yaml.safeLoad(fs.readFileSync(path.join(__dirname, '..', 'swagger.yml')));
+  const swaggerJson: any = yaml.safeLoad(fs.readFileSync(path.join(__dirname, '..', '..', 'swagger.yml')));
 
   swaggerJson.host = host;
 

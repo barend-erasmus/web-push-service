@@ -2,11 +2,12 @@
   "name": "web-push-service",
   "version": "1.0.1",
   "description": "",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "start": "npm run build & node ./dist/main.js start --port 8080",
+    "cover": "tsc & istanbul cover node_modules/mocha/bin/_mocha ./dist/tests/**/*.spec.js",
+    "start": "npm run build & node ./dist/src/main.js start --port 8080",
     "test": "mocha --require ts-node/register ./tests/**/*.spec.ts"
   },
   "repository": {
@@ -28,6 +29,7 @@
     "@types/sinon": "^5.0.1",
     "@types/supertest": "^2.0.5",
     "chai": "^4.1.2",
+    "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
     "prettier": "^1.14.0",
     "sinon": "^6.1.4",
