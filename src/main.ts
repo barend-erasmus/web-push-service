@@ -15,6 +15,7 @@ commander
   .option('-h --host <host>', 'Host')
   .option('-m --mongo <host>', 'Mongo')
   .option('-p --port <port>', 'Port')
+  .option('-s --simple>', `Install the Web Push Service without NGINX and Let's Encrypt`)
   .action((command: any) => {
     if (!command.port) {
       console.log(`${chalk.red('Missing Parameter:')} ${chalk.white('Please provide a port')}`);
@@ -26,6 +27,7 @@ commander
       return;
     }
 
+    console.log(chalk.blue(`Creating systemd service file...`));
     fs.writeFileSync(
       '/lib/systemd/system/web-push-service.service',
       `[Unit]
@@ -41,12 +43,20 @@ commander
     WantedBy=multi-user.target`,
     );
 
-    spawnSync('systemctl', ['start', 'web-push-service']);
-
+    console.log(chalk.blue(`Enabling web-push-service`));
     spawnSync('systemctl', ['enable', 'web-push-service']);
 
+    console.log(chalk.blue(`Starting web-push-service...`));
+    spawnSync('systemctl', ['start', 'web-push-service']);
+
+    if (command.simple) {
+      return;
+    }
+
+    console.log(chalk.blue(`Installing letsencrypt...`));
     spawnSync('apt-get  -y letsencrypt', ['install', '-y', 'letsencrypt']);
 
+    console.log(chalk.blue(`Obtaining Certificate letsencrypt...`));
     spawnSync('letsencrypt', [
       'certonly',
       '--standalone',
@@ -57,8 +67,10 @@ commander
       command.host,
     ]);
 
+    console.log(chalk.blue(`Installing nginx...`));
     spawnSync('apt', ['install', '-y', 'nginx']);
 
+    console.log(chalk.blue(`Creating nginx configuration file...`));
     fs.writeFileSync(
       '/etc/nginx/sites-enabled/web-push-service',
       `upstream web-push-service {
@@ -105,11 +117,14 @@ commander
   }`,
     );
 
+    console.log(chalk.blue(`Configuring firewall...`));
     spawnSync('ufw', ['allow', `'Nginx Full'`]);
 
-    spawnSync('systemctl', ['start', 'nginx']);
-
+    console.log(chalk.blue(`Enabling nginx...`));
     spawnSync('systemctl', ['enable', 'nginx']);
+
+    console.log(chalk.blue(`Starting nginx...`));
+    spawnSync('systemctl', ['start', 'nginx']);
   });
 
 commander
