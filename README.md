@@ -1,6 +1,6 @@
 # Web Push Service
 
-![Travis CI](https://travis-ci.org/barend-erasmus/web-push-service.svg?branch=master) ![Coveralls](https://coveralls.io/repos/github/barend-erasmus/web-push-service/badge.svg?branch=master)](https://coveralls.io/github/barend-erasmus/web-push-service?branch=master) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Travis CI](https://travis-ci.org/barend-erasmus/web-push-service.svg?branch=master) ![Coveralls](https://coveralls.io/repos/github/barend-erasmus/web-push-service/badge.svg?branch=master)] ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 Host your own Web Push Service.
 
