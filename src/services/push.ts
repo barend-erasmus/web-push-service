@@ -44,7 +44,6 @@ export class PushService {
         TTL: 604800, // 1 Week
       });
     } catch (error) {
-      // TODO: Cover with tests
       if (error.statusCode === 410) {
         await this.subscriptionRepository.delete(client.key, channel, subscription.endpoint);
       } else {
