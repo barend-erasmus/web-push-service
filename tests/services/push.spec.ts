@@ -163,5 +163,23 @@ describe('PushService', () => {
 
       expect((subscriptionRepository.delete as sinon.SinonSpy).calledOnce).to.be.true;
     });
+
+    it('Should throw error given webpush#sendNotification throws error', async () => {
+      const subscriptionRepository: ISubscriptionRepository = {
+        delete: sinon.spy() as any,
+        findAll: sinon.stub().returns(Promise.resolve([new Subscription(null, null, null)])) as any,
+      } as ISubscriptionRepository;
+
+      const pushService: PushService = new PushService(subscriptionRepository);
+
+      (webpush as any).sendNotification = sinon.stub().returns(Promise.reject(new Error()));
+
+      try {
+        await pushService.create(new Client('key', 'public-key', 'private-key', 'endpoint'), 'channel', 'payload');
+        throw new Error('Expected Error');
+      } catch (error) {
+        expect(error.message).to.be.not.eq('Expected Error');
+      }
+    });
   });
 });
