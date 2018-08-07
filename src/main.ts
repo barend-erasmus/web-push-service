@@ -45,6 +45,18 @@ commander
 
     spawnSync('systemctl', ['enable', 'web-push-service']);
 
+    spawnSync('apt-get  -y letsencrypt', ['install', '-y', 'letsencrypt']);
+
+    spawnSync('letsencrypt', [
+      'certonly',
+      '--standalone',
+      '--agree-tos',
+      '--email',
+      'developersworkspace@gmail.com',
+      '-d',
+      command.host,
+    ]);
+
     spawnSync('apt', ['install', '-y', 'nginx']);
 
     fs.writeFileSync(
