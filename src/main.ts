@@ -15,7 +15,7 @@ commander
   .option('-h --host <host>', 'Host')
   .option('-m --mongo <host>', 'Mongo')
   .option('-p --port <port>', 'Port')
-  .option('-s --simple>', `Install the Web Push Service without NGINX and Let's Encrypt`)
+  .option('-s --simple', `Install the Web Push Service without NGINX and Let's Encrypt`)
   .action((command: any) => {
     if (!command.port) {
       console.log(`${chalk.red('Missing Parameter:')} ${chalk.white('Please provide a port')}`);
