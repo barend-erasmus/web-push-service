@@ -84,7 +84,7 @@ Usage: install [options]
     -h --host <host>   Host
     -m --mongo <host>  Mongo
     -p --port <port>   Port
-    -s --simple>       Install the Web Push Service without NGINX and Let's Encrypt
+    -s --simple        Install the Web Push Service without NGINX and Let's Encrypt
     -h, --help         output usage information
 ```
 
