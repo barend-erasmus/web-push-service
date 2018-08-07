@@ -1,10 +1,12 @@
+coverage
+
 images
 
 sample
 
-src
+/src
 
-tests
+/tests
 
 *.dat
 
