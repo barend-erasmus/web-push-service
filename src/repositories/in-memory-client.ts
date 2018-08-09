@@ -5,11 +5,11 @@ import * as NeDB from 'nedb';
 export class InMemoryClientRepository implements IClientRepository {
   protected static database: any = null;
 
-  constructor() {
-    if (!InMemoryClientRepository.database) {
+  constructor(fileName: string) {
+    if (!fileName || !InMemoryClientRepository.database) {
       InMemoryClientRepository.database = new NeDB({
         autoload: true,
-        filename: './clients.dat',
+        filename: fileName,
       });
     }
   }

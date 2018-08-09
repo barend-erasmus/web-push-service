@@ -15,7 +15,8 @@ commander
   .option('-h --host <host>', 'Host')
   .option('-m --mongo <host>', 'Mongo')
   .option('-p --port <port>', 'Port')
-  .option('-s --simple', `Install the Web Push Service without NGINX and Let's Encrypt`)
+  .option('--nginx', 'Install NGINX')
+  .option('--letsencrypt', `Install Let's Encrypt`)
   .action((command: any) => {
     if (!command.port) {
       console.log(`${chalk.red('Missing Parameter:')} ${chalk.white('Please provide a port')}`);
@@ -53,27 +54,30 @@ commander
       return;
     }
 
-    console.log(chalk.blue(`Installing letsencrypt...`));
-    spawnSync('apt-get  -y letsencrypt', ['install', '-y', 'letsencrypt']);
+    if (command.letsencrypt) {
+      console.log(chalk.blue(`Installing letsencrypt...`));
+      spawnSync('apt-get  -y letsencrypt', ['install', '-y', 'letsencrypt']);
 
-    console.log(chalk.blue(`Obtaining Certificate letsencrypt...`));
-    spawnSync('letsencrypt', [
-      'certonly',
-      '--standalone',
-      '--agree-tos',
-      '--email',
-      'developersworkspace@gmail.com',
-      '-d',
-      command.host,
-    ]);
+      console.log(chalk.blue(`Obtaining Certificate letsencrypt...`));
+      spawnSync('letsencrypt', [
+        'certonly',
+        '--standalone',
+        '--agree-tos',
+        '--email',
+        'developersworkspace@gmail.com',
+        '-d',
+        command.host,
+      ]);
+    }
 
-    console.log(chalk.blue(`Installing nginx...`));
-    spawnSync('apt', ['install', '-y', 'nginx']);
+    if (command.nginx) {
+      console.log(chalk.blue(`Installing nginx...`));
+      spawnSync('apt', ['install', '-y', 'nginx']);
 
-    console.log(chalk.blue(`Creating nginx configuration file...`));
-    fs.writeFileSync(
-      '/etc/nginx/sites-enabled/web-push-service',
-      `upstream web-push-service {
+      console.log(chalk.blue(`Creating nginx configuration file...`));
+      fs.writeFileSync(
+        '/etc/nginx/sites-enabled/web-push-service',
+        `upstream web-push-service {
       server 127.0.0.1:8080;
   }
   
@@ -87,7 +91,9 @@ commander
       gunzip on;
       gzip_static on;
   
-      return 301 https://$server_name$request_uri;
+      location / {
+        proxy_pass http://web-push-service;
+      }
   }
   
   server {
@@ -101,30 +107,36 @@ commander
       gzip_static on;
   
       proxy_set_header X-Real-IP $remote_addr;
-  
-      ssl_certificate /etc/letsencrypt/live/${command.host ? command.host : 'your-domain.com'}/fullchain.pem;
+
+      ${
+        command.letsencrypt
+          ? `ssl_certificate /etc/letsencrypt/live/${command.host ? command.host : 'your-domain.com'}/fullchain.pem;
       ssl_certificate_key /etc/letsencrypt/live/${command.host ? command.host : 'your-domain.com'}/privkey.pem;
   
       ssl on;
       ssl_session_cache  builtin:1000  shared:SSL:10m;
       ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
       ssl_ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA;
-      ssl_prefer_server_ciphers on;
+      ssl_prefer_server_ciphers on;`
+          : ''
+      }
+      
   
       location / {
           proxy_pass http://web-push-service;
       }
   }`,
-    );
+      );
 
-    console.log(chalk.blue(`Configuring firewall...`));
-    spawnSync('ufw', ['allow', `'Nginx Full'`]);
+      console.log(chalk.blue(`Configuring firewall...`));
+      spawnSync('ufw', ['allow', `'Nginx Full'`]);
 
-    console.log(chalk.blue(`Enabling nginx...`));
-    spawnSync('systemctl', ['enable', 'nginx']);
+      console.log(chalk.blue(`Enabling nginx...`));
+      spawnSync('systemctl', ['enable', 'nginx']);
 
-    console.log(chalk.blue(`Starting nginx...`));
-    spawnSync('systemctl', ['start', 'nginx']);
+      console.log(chalk.blue(`Starting nginx...`));
+      spawnSync('systemctl', ['start', 'nginx']);
+    }
   });
 
 commander
@@ -151,7 +163,7 @@ commander
       clientRepository = new MongoClientRepository(command.mongo);
       subscriptionRepository = new MongoSubscriptionRepository(command.mongo);
     } else {
-      clientRepository = new InMemoryClientRepository();
+      clientRepository = new InMemoryClientRepository('./clients.dat');
       subscriptionRepository = new InMemorySubscriptionRepository();
     }
 

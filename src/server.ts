@@ -54,7 +54,11 @@ export function initialize(
 
   swaggerJson.host = host;
 
-  expressApplication.use('/', swaggerUI.serve, swaggerUI.setup(swaggerJson));
+  expressApplication.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerJson));
+
+  expressApplication.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
+    response.redirect('/swagger');
+  });
 
   return expressApplication;
 }

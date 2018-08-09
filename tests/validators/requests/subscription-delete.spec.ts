@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import { SubscriptionPostRequestValidator } from '../../../src/validators/requests/subscription-post';
+import { SubscriptionDeleteRequestValidator } from '../../../src/validators/requests/subscription-delete';
 
-describe('SubscriptionPostRequestValidator', () => {
+describe('SubscriptionDeleteRequestValidator', () => {
   describe('#validateBody', () => {
     it('Should return true', async () => {
-      const result: boolean = SubscriptionPostRequestValidator.validateBody({
+      const result: boolean = SubscriptionDeleteRequestValidator.validateBody({
         endpoint: 'endpoint',
         expirationTime: 0,
         keys: {
@@ -17,7 +17,7 @@ describe('SubscriptionPostRequestValidator', () => {
     });
 
     it('Should return true given null expirationTime', async () => {
-      const result: boolean = SubscriptionPostRequestValidator.validateBody({
+      const result: boolean = SubscriptionDeleteRequestValidator.validateBody({
         endpoint: 'endpoint',
         expirationTime: null,
         keys: {
@@ -30,7 +30,7 @@ describe('SubscriptionPostRequestValidator', () => {
     });
 
     it('Should return false given no endpoint', async () => {
-      const result: boolean = SubscriptionPostRequestValidator.validateBody({
+      const result: boolean = SubscriptionDeleteRequestValidator.validateBody({
         expirationTime: 0,
         keys: {
           auth: 'auth',
@@ -42,7 +42,7 @@ describe('SubscriptionPostRequestValidator', () => {
     });
 
     it('Should return false given no expirationTime', async () => {
-      const result: boolean = SubscriptionPostRequestValidator.validateBody({
+      const result: boolean = SubscriptionDeleteRequestValidator.validateBody({
         endpoint: 'endpoint',
         keys: {
           auth: 'auth',
@@ -54,7 +54,7 @@ describe('SubscriptionPostRequestValidator', () => {
     });
 
     it('Should return false given no keys', async () => {
-      const result: boolean = SubscriptionPostRequestValidator.validateBody({
+      const result: boolean = SubscriptionDeleteRequestValidator.validateBody({
         endpoint: 'endpoint',
         expirationTime: 0,
       });
@@ -63,7 +63,7 @@ describe('SubscriptionPostRequestValidator', () => {
     });
 
     it('Should return false given no auth in keys', async () => {
-      const result: boolean = SubscriptionPostRequestValidator.validateBody({
+      const result: boolean = SubscriptionDeleteRequestValidator.validateBody({
         endpoint: 'endpoint',
         expirationTime: 0,
         keys: {
@@ -75,7 +75,7 @@ describe('SubscriptionPostRequestValidator', () => {
     });
 
     it('Should return false given no p256dh in keys', async () => {
-      const result: boolean = SubscriptionPostRequestValidator.validateBody({
+      const result: boolean = SubscriptionDeleteRequestValidator.validateBody({
         endpoint: 'endpoint',
         expirationTime: 0,
         keys: {
@@ -89,7 +89,7 @@ describe('SubscriptionPostRequestValidator', () => {
 
   describe('#validateParams', () => {
     it('Should return true', async () => {
-      const result: boolean = SubscriptionPostRequestValidator.validateParams({
+      const result: boolean = SubscriptionDeleteRequestValidator.validateParams({
         channel: 'channel',
       });
 
@@ -97,7 +97,7 @@ describe('SubscriptionPostRequestValidator', () => {
     });
 
     it('Should return false given no channel', async () => {
-      const result: boolean = SubscriptionPostRequestValidator.validateParams({
+      const result: boolean = SubscriptionDeleteRequestValidator.validateParams({
       });
 
       expect(result).to.be.false;

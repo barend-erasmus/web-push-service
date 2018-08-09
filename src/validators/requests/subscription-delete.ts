@@ -5,7 +5,7 @@ export class SubscriptionDeleteRequestValidator {
     const schema: any = {
       type: 'object',
       properties: {
-        endpoint: { type: 'url' },
+        endpoint: { type: 'string' },
         expirationTime: { type: ['number', 'null'] },
         keys: {
           type: 'object',
