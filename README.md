@@ -1,6 +1,6 @@
 # Web Push Service
 
-![Travis CI](https://travis-ci.org/barend-erasmus/web-push-service.svg?branch=master) ![Coveralls](https://coveralls.io/repos/github/barend-erasmus/web-push-service/badge.svg?branch=master) ![NPM Package](https://badge.fury.io/js/web-push-service.svg) ![Dependencies](https://david-dm.org/barend-erasmus/web-push-service.svg) ![Maintainability](https://api.codeclimate.com/v1/badges/ef14b95993167de0e04c/maintainability) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Travis CI](https://travis-ci.org/barend-erasmus/web-push-service.svg?branch=master) ![Coveralls](https://coveralls.io/repos/github/barend-erasmus/web-push-service/badge.svg?branch=master) ![NPM Package](https://badge.fury.io/js/web-push-service.svg) ![Dependencies](https://david-dm.org/barend-erasmus/web-push-service.svg) ![Maintainability](https://api.codeclimate.com/v1/badges/ef14b95993167de0e04c/maintainability) ![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Last Commit](https://img.shields.io/github/last-commit/barend-erasmus/web-push-service.svg) ![Language](https://img.shields.io/github/languages/top/barend-erasmus/web-push-service.svg)
 
 Host your own Web Push Service.
 
