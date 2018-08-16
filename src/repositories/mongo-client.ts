@@ -24,7 +24,17 @@ export class MongoClientRepository implements IClientRepository {
       return null;
     }
 
-    return new Client(document.key, document.publicKey, document.privateKey, document.endpoint);
+    return new Client(document.id, document.key, document.publicKey, document.privateKey, document.endpoint);
+  }
+
+  public async findById(id: string): Promise<Client> {
+    const document: any = await MongoClientRepository.database.findOne({ id });
+
+    if (!document) {
+      return null;
+    }
+
+    return new Client(document.id, document.key, document.publicKey, document.privateKey, document.endpoint);
   }
 
   public async findByPublicKey(publicKey: string): Promise<Client> {
@@ -34,7 +44,7 @@ export class MongoClientRepository implements IClientRepository {
       return null;
     }
 
-    return new Client(document.key, document.publicKey, document.privateKey, document.endpoint);
+    return new Client(document.id, document.key, document.publicKey, document.privateKey, document.endpoint);
   }
 
   public async insert(client: Client): Promise<void> {

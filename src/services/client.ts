@@ -30,12 +30,23 @@ export class ClientService {
     return client;
   }
 
+  // TODO: Unit Test
+  public async find(id: string): Promise<Client> {
+    if (!id) {
+      throw new Error('Id cannot be null');
+    }
+
+    const client: Client = await this.clientRepository.findById(id);
+
+    return client;
+  }
+
   protected generateNewClient(endpoint: string): Client {
     const key: string = uuid.v4();
 
     const vapidKeys: any = WebPushHelper.generateVAPIDKeys();
 
-    const client: Client = new Client(key, vapidKeys.publicKey, vapidKeys.privateKey, endpoint);
+    const client: Client = new Client(uuid.v4(), key, vapidKeys.publicKey, vapidKeys.privateKey, endpoint);
 
     return client;
   }

@@ -14,6 +14,8 @@ import * as fs from 'fs';
 import { ClientService } from './services/client';
 import { PushService } from './services/push';
 import { SubscriptionService } from './services/subscription';
+import * as exphbs from 'express-handlebars';
+import { PromptRouter } from './routes/prompt';
 
 export function initialize(
   clientRepository: IClientRepository,
@@ -41,14 +43,14 @@ export function initialize(
 
   const version1Router: express.Router = express.Router();
 
-  version1Router.route('/api/client').post(ClientRouter.post);
+  version1Router.route('/client').post(ClientRouter.post);
 
-  version1Router.route('/api/client/channels').get(AuthorizationMiddleware.build(), ClientRouter.channelsGet);
+  version1Router.route('/client/channels').get(AuthorizationMiddleware.build(), ClientRouter.channelsGet);
 
-  version1Router.route('/api/push/:channel').post(AuthorizationMiddleware.build(), PushRouter.post);
+  version1Router.route('/push/:channel').post(AuthorizationMiddleware.build(), PushRouter.post);
 
   version1Router
-    .route('/api/subscription/:channel')
+    .route('/subscription/:channel')
     .delete(AuthorizationMiddleware.build(), SubscriptionRouter.delete)
     .post(AuthorizationMiddleware.build(), SubscriptionRouter.post);
 
@@ -58,9 +60,15 @@ export function initialize(
 
   version1Router.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerJson));
 
-  expressApplication.use('/v1', version1Router);
+  expressApplication.use('/api/v1', version1Router);
 
   expressApplication.use('/static', express.static(path.join(__dirname, '..', '..', 'public')));
+
+  expressApplication.set('views',  path.join(__dirname, '..', '..', 'public'));
+  expressApplication.engine('handlebars', exphbs({ layoutsDir: path.join(__dirname, '..', '..', 'public') }));
+  expressApplication.set('view engine', 'handlebars');
+
+  expressApplication.route('/prompt/:id').get(PromptRouter.home);
 
   expressApplication.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
     response.redirect('/v1/swagger');

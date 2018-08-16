@@ -34,6 +34,26 @@ export class InMemoryClientRepository implements IClientRepository {
     });
   }
 
+  public findById(id: string): Promise<Client> {
+    return new Promise((resolve: (client: Client) => void, reject: (error: Error) => void) => {
+      InMemoryClientRepository.database.findOne({ id }, (error: Error, document: any) => {
+        if (error) {
+          reject(error);
+
+          return;
+        }
+
+        if (!document) {
+          resolve(null);
+
+          return;
+        }
+
+        resolve(document);
+      });
+    });
+  }
+
   public findByPublicKey(publicKey: string): Promise<Client> {
     return new Promise((resolve: (client: Client) => void, reject: (error: Error) => void) => {
       InMemoryClientRepository.database.findOne({ publicKey }, (error: Error, document: any) => {

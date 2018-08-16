@@ -7,7 +7,7 @@ describe('InMemoryClientRepository', () => {
     it('Should return client', async () => {
       const clientRepository: InMemoryClientRepository = new InMemoryClientRepository(null);
 
-      await clientRepository.insert(new Client('key', 'publicKey', 'privateKey', 'endpoint'));
+      await clientRepository.insert(new Client(null, 'key', 'publicKey', 'privateKey', 'endpoint'));
 
       const client: Client = await clientRepository.find('key');
 
@@ -17,7 +17,7 @@ describe('InMemoryClientRepository', () => {
     it('Should return client with correct properties', async () => {
       const clientRepository: InMemoryClientRepository = new InMemoryClientRepository(null);
 
-      await clientRepository.insert(new Client('key', 'publicKey', 'privateKey', 'endpoint'));
+      await clientRepository.insert(new Client(null, 'key', 'publicKey', 'privateKey', 'endpoint'));
 
       const client: Client = await clientRepository.find('key');
 
@@ -41,7 +41,7 @@ describe('InMemoryClientRepository', () => {
     it('Should return client', async () => {
       const clientRepository: InMemoryClientRepository = new InMemoryClientRepository(null);
 
-      await clientRepository.insert(new Client('key', 'publicKey', 'privateKey', 'endpoint'));
+      await clientRepository.insert(new Client(null, 'key', 'publicKey', 'privateKey', 'endpoint'));
 
       const client: Client = await clientRepository.findByPublicKey('publicKey');
 
@@ -51,7 +51,7 @@ describe('InMemoryClientRepository', () => {
     it('Should return client with correct properties', async () => {
       const clientRepository: InMemoryClientRepository = new InMemoryClientRepository(null);
 
-      await clientRepository.insert(new Client('key', 'publicKey', 'privateKey', 'endpoint'));
+      await clientRepository.insert(new Client(null, 'key', 'publicKey', 'privateKey', 'endpoint'));
 
       const client: Client = await clientRepository.findByPublicKey('publicKey');
 

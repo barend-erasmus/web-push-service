@@ -20,7 +20,7 @@ describe('PushService', () => {
       const webpushSendNotificationSpy: sinon.SinonSpy = sinon.spy();
       (webpush as any).sendNotification = webpushSendNotificationSpy;
 
-      await pushService.create(new Client('key', 'public-key', 'private-key', 'endpoint'), 'channel', 'payload');
+      await pushService.create(new Client(null, 'key', 'public-key', 'private-key', 'endpoint'), 'channel', 'payload');
 
       expect(webpushSendNotificationSpy.calledOnce).to.be.true;
     });
@@ -37,7 +37,7 @@ describe('PushService', () => {
       const webpushSendNotificationSpy: sinon.SinonSpy = sinon.spy();
       (webpush as any).sendNotification = webpushSendNotificationSpy;
 
-      await pushService.create(new Client('key', 'public-key', 'private-key', 'endpoint'), 'channel', 'payload');
+      await pushService.create(new Client(null, 'key', 'public-key', 'private-key', 'endpoint'), 'channel', 'payload');
 
       const subscription: Subscription = webpushSendNotificationSpy.args[0][0];
 
@@ -75,7 +75,7 @@ describe('PushService', () => {
       const pushService: PushService = new PushService(null);
 
       try {
-        await pushService.create(new Client(null, null, null, null), null, null);
+        await pushService.create(new Client(null, null, null, null, null), null, null);
 
         throw new Error('Expected Error');
       } catch (error) {
@@ -87,7 +87,7 @@ describe('PushService', () => {
       const pushService: PushService = new PushService(null);
 
       try {
-        await pushService.create(new Client('key', null, null, null), null, null);
+        await pushService.create(new Client(null, 'key', null, null, null), null, null);
 
         throw new Error('Expected Error');
       } catch (error) {
@@ -99,7 +99,7 @@ describe('PushService', () => {
       const pushService: PushService = new PushService(null);
 
       try {
-        await pushService.create(new Client('key', 'public-key', null, null), null, null);
+        await pushService.create(new Client(null, 'key', 'public-key', null, null), null, null);
 
         throw new Error('Expected Error');
       } catch (error) {
@@ -111,7 +111,7 @@ describe('PushService', () => {
       const pushService: PushService = new PushService(null);
 
       try {
-        await pushService.create(new Client('key', 'public-key', 'private-key', null), null, null);
+        await pushService.create(new Client(null, 'key', 'public-key', 'private-key', null), null, null);
 
         throw new Error('Expected Error');
       } catch (error) {
@@ -123,7 +123,7 @@ describe('PushService', () => {
       const pushService: PushService = new PushService(null);
 
       try {
-        await pushService.create(new Client('key', 'public-key', 'private-key', 'endpoint'), null, null);
+        await pushService.create(new Client(null, 'key', 'public-key', 'private-key', 'endpoint'), null, null);
 
         throw new Error('Expected Error');
       } catch (error) {
@@ -135,7 +135,7 @@ describe('PushService', () => {
       const pushService: PushService = new PushService(null);
 
       try {
-        await pushService.create(new Client('key', 'public-key', 'private-key', 'endpoint'), 'channel', null);
+        await pushService.create(new Client(null, 'key', 'public-key', 'private-key', 'endpoint'), 'channel', null);
 
         throw new Error('Expected Error');
       } catch (error) {
@@ -159,7 +159,7 @@ describe('PushService', () => {
         return Promise.reject(error);
       });
 
-      await pushService.create(new Client('key', 'public-key', 'private-key', 'endpoint'), 'channel', 'payload');
+      await pushService.create(new Client(null, 'key', 'public-key', 'private-key', 'endpoint'), 'channel', 'payload');
 
       expect((subscriptionRepository.delete as sinon.SinonSpy).calledOnce).to.be.true;
     });
@@ -175,7 +175,7 @@ describe('PushService', () => {
       (webpush as any).sendNotification = sinon.stub().returns(Promise.reject(new Error()));
 
       try {
-        await pushService.create(new Client('key', 'public-key', 'private-key', 'endpoint'), 'channel', 'payload');
+        await pushService.create(new Client(null, 'key', 'public-key', 'private-key', 'endpoint'), 'channel', 'payload');
         throw new Error('Expected Error');
       } catch (error) {
         expect(error.message).to.be.not.eq('Expected Error');

@@ -8,7 +8,7 @@ describe('AuthorizationMiddleware', () => {
   describe('#apply', () => {
     it('Should call next given key', async () => {
       const clientRepository: IClientRepository = {
-        find: sinon.stub().returns(Promise.resolve(new Client(null, null, null, null))) as any,
+        find: sinon.stub().returns(Promise.resolve(new Client(null, null, null, null, null))) as any,
         findByPublicKey: sinon.stub().returns(Promise.resolve(null)) as any,
       } as IClientRepository;
 
@@ -24,7 +24,7 @@ describe('AuthorizationMiddleware', () => {
     it('Should call next given public key', async () => {
       const clientRepository: IClientRepository = {
         find: sinon.stub().returns(Promise.resolve(null)) as any,
-        findByPublicKey: sinon.stub().returns(Promise.resolve(new Client(null, null, null, null))) as any,
+        findByPublicKey: sinon.stub().returns(Promise.resolve(new Client(null, null, null, null, null))) as any,
       } as IClientRepository;
 
       const fn = AuthorizationMiddleware.build();
