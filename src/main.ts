@@ -9,6 +9,8 @@ import { ISubscriptionRepository } from './interfaces/subscription-repository';
 import { MongoSubscriptionRepository } from './repositories/mongo-subscription';
 import { spawnSync } from 'child_process';
 import * as fs from 'fs';
+import { InstallCLIValidator } from './validators/cli/install';
+import { StartCLIValidator } from './validators/cli/start';
 
 commander
   .command('install')
@@ -18,13 +20,11 @@ commander
   .option('--nginx', 'Install NGINX')
   .option('--letsencrypt', `Install Let's Encrypt`)
   .action((command: any) => {
-    if (!command.port) {
-      console.log(`${chalk.red('Missing Parameter:')} ${chalk.white('Please provide a port')}`);
-      return;
-    }
+    if (!InstallCLIValidator.validate(command)) {
+      for (const error of InstallCLIValidator.errors(command)) {
+        console.log(`${chalk.red('ERROR:')} ${chalk.white(error)}`);
+      }
 
-    if (isNaN(command.port)) {
-      console.log(`${chalk.red('Invalid Parameter:')} ${chalk.white('Please provide a valid port')}`);
       return;
     }
 
@@ -49,10 +49,6 @@ commander
 
     console.log(chalk.blue(`Starting web-push-service...`));
     spawnSync('systemctl', ['start', 'web-push-service']);
-
-    if (command.simple) {
-      return;
-    }
 
     if (command.letsencrypt) {
       console.log(chalk.blue(`Installing letsencrypt...`));
@@ -145,13 +141,11 @@ commander
   .option('-m --mongo <host>', 'Mongo')
   .option('-p --port <port>', 'Port')
   .action((command: any) => {
-    if (!command.port) {
-      console.log(`${chalk.red('Missing Parameter:')} ${chalk.white('Please provide a port')}`);
-      return;
-    }
+    if (!StartCLIValidator.validate(command)) {
+      for (const error of StartCLIValidator.errors(command)) {
+        console.log(`${chalk.red('ERROR:')} ${chalk.white(error)}`);
+      }
 
-    if (isNaN(command.port)) {
-      console.log(`${chalk.red('Invalid Parameter:')} ${chalk.white('Please provide a valid port')}`);
       return;
     }
 

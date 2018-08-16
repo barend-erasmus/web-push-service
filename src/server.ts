@@ -39,13 +39,15 @@ export function initialize(
     next();
   });
 
-  expressApplication.route('/api/client').post(ClientRouter.post);
+  const version1Router: express.Router = express.Router();
 
-  expressApplication.route('/api/client/channels').get(AuthorizationMiddleware.build(), ClientRouter.channelsGet);
+  version1Router.route('/api/client').post(ClientRouter.post);
 
-  expressApplication.route('/api/push/:channel').post(AuthorizationMiddleware.build(), PushRouter.post);
+  version1Router.route('/api/client/channels').get(AuthorizationMiddleware.build(), ClientRouter.channelsGet);
 
-  expressApplication
+  version1Router.route('/api/push/:channel').post(AuthorizationMiddleware.build(), PushRouter.post);
+
+  version1Router
     .route('/api/subscription/:channel')
     .delete(AuthorizationMiddleware.build(), SubscriptionRouter.delete)
     .post(AuthorizationMiddleware.build(), SubscriptionRouter.post);
@@ -54,10 +56,14 @@ export function initialize(
 
   swaggerJson.host = host;
 
-  expressApplication.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerJson));
+  version1Router.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerJson));
+
+  expressApplication.use('/v1', version1Router);
+
+  expressApplication.use('/static', express.static(path.join(__dirname, '..', '..', 'public')));
 
   expressApplication.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
-    response.redirect('/swagger');
+    response.redirect('/v1/swagger');
   });
 
   return expressApplication;

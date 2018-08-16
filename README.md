@@ -44,13 +44,13 @@ See [Sample](https://github.com/barend-erasmus/web-push-service/tree/master/samp
 
 **cURL**
 
-`curl -d '{ "image": "https://via.placeholder.com/50x50", "message": "My first message", "title": "Hello World", "url": "https://example.com" }' -H "Authorization: <your-key-here>" -H "Content-Type: application/json" -X POST https://your-domain.com/api/push`
+`curl -d '{ "image": "https://via.placeholder.com/50x50", "message": "My first message", "title": "Hello World", "url": "https://example.com" }' -H "Authorization: <your-key-here>" -H "Content-Type: application/json" -X POST https://your-domain.com/api/v1/push`
 
 ## Obtaining Credentials
 
 **cURL**
 
-`curl -d '{ "endpoint": "https://your-domain.con" }' -H "Content-Type: application/json" -X POST https://your-domain.com/api/client`
+`curl -d '{ "endpoint": "https://your-domain.com" }' -H "Content-Type: application/json" -X POST https://your-domain.com/api/v1/client`
 
 This request will return your `key` and `publicKey`.
 
@@ -84,7 +84,8 @@ Usage: install [options]
     -h --host <host>   Host
     -m --mongo <host>  Mongo
     -p --port <port>   Port
-    -s --simple        Install the Web Push Service without NGINX and Let's Encrypt
+    --nginx            Install NGINX
+    --letsencrypt      Install Let's Encrypt
     -h, --help         output usage information
 ```
 

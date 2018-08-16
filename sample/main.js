@@ -65,20 +65,6 @@ async function unsubscribe(channel, pushSubscription = null) {
   });
 }
 
-// async function sendNotification(message, title) {
-//   await fetch(`${state.webPushServiceHost}/push/default`, {
-//     body: JSON.stringify({
-//       message,
-//       title,
-//     }),
-//     headers: {
-//       Authorization: '<your-key-here',
-//       'Content-Type': 'application/json',
-//     },
-//     method: 'POST',
-//   });
-// }
-
 async function initialize() {
   if (hasServiceWorkerFunctionality() && hasPushManagerFunctionality()) {
     registerServiceWorker();
@@ -97,7 +83,7 @@ async function initialize() {
 const state = {
   publicKey: '<your-public-key-here>',
   serviceWorkerRegistration: null,
-  webPushServiceHost: 'https://<your-domain-here>/api',
+  webPushServiceHost: 'https://<your-domain-here>/api/v1',
 };
 
 initialize();
