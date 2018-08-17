@@ -32,7 +32,7 @@ function hasPushManagerFunctionality() {
 }
 
 function registerServiceWorker() {
-  navigator.serviceWorker.register('/static/scripts/service-worker.js');
+  navigator.serviceWorker.register('/static/scripts/service-worker.js', { scope: '/' });
 }
 
 async function subscribe(channel, pushSubscription = null) {
