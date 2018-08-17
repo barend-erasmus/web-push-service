@@ -30,12 +30,12 @@
                     <div class="card-content white-text">
                         <span class="card-title">Allow Notifications</span>
                         <p>
-                            Passport (Euromonitor International) would like to send you notifications.
+                            {{name}} would like to send you notifications.
                         </p>
                     </div>
                     <div class="card-action">
-                        <a href="#">Allow</a>
-                        <a href="#">Deny</a>
+                        <a onclick="onClickAllow()">Allow</a>
+                        <a onclick="onClickDeny()">Deny</a>
                     </div>
                 </div>
             </div>
@@ -44,6 +44,82 @@
     <script src="/static/scripts/main.js"></script>
     <script>
         initialize('{{client.publicKey}}', '{{host}}');
+
+        if (!('Notification' in window)) {
+            redirect(false);
+        }
+
+        if (Notification.permission === 'denied') {
+            redirect(false);
+        }
+
+        if (Notification.permission === 'granted') {
+            redirect(true);
+        }
+
+        function onClickAllow() {
+            prompt();
+        }
+
+        function onClickDeny() {
+            redirect(false);
+        }
+
+        function prompt() {
+            Notification.requestPermission().then(function (result) {
+                switch (result) {
+                    case 'denied':
+                        redirect(false);
+                        return;
+                    case 'granted':
+                        redirect(true);
+                        return;
+                }
+            });
+        }
+
+        function redirect(granted) {
+            const callback = getQueryParameters()['callback'];
+
+            if (!callback) {
+
+                if (document.referrer) {
+                    window.location.href = document.referrer;
+
+                    return;
+                }
+
+                return;
+            }
+
+            window.location.href = callback;
+        }
+
+        function getQueryParameters() {
+            const str = window.location.href;
+
+            const pattern1 = new RegExp(/^https?:\/\/[^?]*\??(.*)$/);
+
+            const queryString = pattern1.exec(str)[1];
+
+            if (!queryString) {
+                return {};
+            }
+
+            const pattern2 = new RegExp(/([^=]+)=([^&]+)&?/g);
+
+            const pattern2Matches = queryString.match(pattern2);
+
+            const queryParameters = {};
+
+            for (const match of pattern2Matches) {
+                const regexMatch = new RegExp(/^([^=]+)=([^&]+)&?$/).exec(match);
+
+                queryParameters[regexMatch[1]] = regexMatch[2];
+            }
+
+            return queryParameters;
+        }
     </script>
 </body>
 

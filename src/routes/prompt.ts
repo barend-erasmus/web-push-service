@@ -1,10 +1,21 @@
 import * as express from 'express';
 import { ClientService } from '../services/client';
 import { Client } from '../models/client';
+import { PromptGetRequestValidator } from '../validators/requests/prompt-get';
 
 export class PromptRouter {
-  public static async home(request: express.Request, response: express.Response): Promise<void> {
-    // TODO: Parameter validation
+  public static async get(request: express.Request, response: express.Response): Promise<void> {
+    if (!PromptGetRequestValidator.validateParams(request.params)) {
+      response.status(400).end();
+
+      return;
+    }
+
+    if (!PromptGetRequestValidator.validateQueryParams(request.params)) {
+      response.status(400).end();
+
+      return;
+    }
 
     const clientService: ClientService = request['clientService'];
 
@@ -16,6 +27,8 @@ export class PromptRouter {
       return;
     }
 
-    response.render('allow-notifications', { client, host: 'http://localhost:8080/api/v1' });
+    const host: string = request['configuration'].host.startsWith('localhost') ? `http://${request['configuration'].host}/api/v1` : `https://${request['configuration'].host}/api/v1`;
+
+    response.render('allow-notifications', { client, host, name: request.query.name });
   }
 }

@@ -38,6 +38,10 @@ export function initialize(
     request['pushService'] = new PushService(subscriptionRepository);
     request['subscriptionService'] = new SubscriptionService(subscriptionRepository);
 
+    request['configuration'] = {
+      host,
+    };
+
     next();
   });
 
@@ -68,7 +72,7 @@ export function initialize(
   expressApplication.engine('handlebars', exphbs({ layoutsDir: path.join(__dirname, '..', '..', 'public') }));
   expressApplication.set('view engine', 'handlebars');
 
-  expressApplication.route('/prompt/:id').get(PromptRouter.home);
+  expressApplication.route('/prompt/:id').get(PromptRouter.get);
 
   expressApplication.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
     response.redirect('/v1/swagger');
