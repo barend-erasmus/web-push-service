@@ -43,7 +43,9 @@
     </div>
     <script src="/static/scripts/main.js"></script>
     <script>
-        initialize('{{client.publicKey}}', '{{host}}');
+        const publicKey = '{{{client.publicKey}}}';
+
+        initialize(publicKey, '{{host}}');
 
         if (!('Notification' in window)) {
             redirect(false);
