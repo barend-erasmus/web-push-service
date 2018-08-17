@@ -66,13 +66,21 @@ export function initialize(
 
   expressApplication.use('/api/v1', version1Router);
 
-  expressApplication.use('/static', express.static(path.join(__dirname, '..', '..', 'public')));
-
   expressApplication.set('views',  path.join(__dirname, '..', '..', 'public'));
   expressApplication.engine('handlebars', exphbs({ layoutsDir: path.join(__dirname, '..', '..', 'public') }));
   expressApplication.set('view engine', 'handlebars');
 
   expressApplication.route('/prompt/:id').get(PromptRouter.get);
+
+  expressApplication.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
+    if (request.url.endsWith('.js')) {
+      response.set('Service-Worker-Allowed', '/')
+    }
+
+    next();
+  });
+
+  expressApplication.use('/static', express.static(path.join(__dirname, '..', '..', 'public')));
 
   expressApplication.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
     response.redirect('/api/v1/swagger');
