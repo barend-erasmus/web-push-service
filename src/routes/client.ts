@@ -5,34 +5,52 @@ import { ClientService } from '../services/client';
 
 export class ClientRouter {
   public static async post(request: express.Request, response: express.Response): Promise<void> {
-    if (!ClientPostRequestValidator.validateBody(request.body)) {
-      response.status(400).json({
-        message: `Invalid Request Body`,
+    try {
+      if (!ClientPostRequestValidator.validateBody(request.body)) {
+        response.status(400).json({
+          message: `Invalid Request Body`,
+        });
+
+        return;
+      }
+
+      const endpoint: string = request.body.endpoint;
+
+      const clientService: ClientService = request['clientService'];
+
+      const client: Client = await clientService.create(endpoint);
+
+      response.json({
+        id: client.id,
+        key: client.key,
+        publicKey: client.publicKey,
       });
+    } catch (error) {
+      console.error(error);
 
-      return;
+      response.json({
+        message: error.message,
+        stackTrace: error.stackTrace,
+      });
     }
-
-    const endpoint: string = request.body.endpoint;
-
-    const clientService: ClientService = request['clientService'];
-
-    const client: Client = await clientService.create(endpoint);
-
-    response.json({
-      id: client.id,
-      key: client.key,
-      publicKey: client.publicKey,
-    });
   }
 
   public static async channelsGet(request: express.Request, response: express.Response): Promise<void> {
-    const client: Client = request['client'];
+    try {
+      const client: Client = request['client'];
 
-    const clientService: ClientService = request['clientService'];
+      const clientService: ClientService = request['clientService'];
 
-    const channels: Array<string> = await clientService.channels(client.key);
+      const channels: Array<string> = await clientService.channels(client.key);
 
-    response.json(channels);
+      response.json(channels);
+    } catch (error) {
+      console.error(error);
+
+      response.json({
+        message: error.message,
+        stackTrace: error.stackTrace,
+      });
+    }
   }
 }
