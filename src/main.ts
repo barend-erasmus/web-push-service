@@ -52,7 +52,7 @@ commander
 
     if (command.letsencrypt) {
       console.log(chalk.blue(`Installing letsencrypt...`));
-      spawnSync('apt-get  -y letsencrypt', ['install', '-y', 'letsencrypt']);
+      spawnSync('apt-get', ['install', '-y', 'letsencrypt']);
 
       console.log(chalk.blue(`Obtaining Certificate letsencrypt...`));
       spawnSync('letsencrypt', [
