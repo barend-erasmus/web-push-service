@@ -65,7 +65,7 @@ export class SubscriptionRouter {
 
       const channel: string = request.params['channel'];
 
-      const subscription: Subscription = request.body;
+      const subscription: Subscription = new Subscription(request.body.endpoint, request.body.expirationTime, request.body.keys);
 
       const client: Client = request['client'];
 

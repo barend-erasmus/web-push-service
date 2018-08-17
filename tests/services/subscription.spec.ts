@@ -181,15 +181,15 @@ describe('SubscriptionService', () => {
       }
     });
 
-    it('Should throw error given subscription with null expirationTime', async () => {
+    it('Should throw error given subscription with undefined expirationTime', async () => {
       const subscriptionService: SubscriptionService = new SubscriptionService(null);
 
       try {
-        await subscriptionService.insert('key', 'channel', new Subscription('endpoint', null, null));
+        await subscriptionService.insert('key', 'channel', new Subscription('endpoint', undefined, null));
 
         throw new Error('Expected Error');
       } catch (error) {
-        expect(error.message).to.be.eq('Expiration Time cannot be null');
+        expect(error.message).to.be.eq('Expiration Time cannot be undefined');
       }
     });
 

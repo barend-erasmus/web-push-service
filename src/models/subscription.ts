@@ -6,8 +6,8 @@ export class Subscription {
       throw new Error('Endpoint cannot be null');
     }
 
-    if (this.expirationTime === null || this.expirationTime === undefined) {
-      throw new Error('Expiration Time cannot be null');
+    if (this.expirationTime === undefined) {
+      throw new Error('Expiration Time cannot be undefined');
     }
 
     if (!this.keys) {
