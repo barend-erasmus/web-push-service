@@ -11,7 +11,7 @@ export class PromptRouter {
       return;
     }
 
-    if (!PromptGetRequestValidator.validateQueryParams(request.params)) {
+    if (!PromptGetRequestValidator.validateQueryParams(request.query)) {
       response.status(400).end();
 
       return;

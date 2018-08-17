@@ -75,7 +75,7 @@ export function initialize(
   expressApplication.route('/prompt/:id').get(PromptRouter.get);
 
   expressApplication.use((request: express.Request, response: express.Response, next: express.NextFunction) => {
-    response.redirect('/v1/swagger');
+    response.redirect('/api/v1/swagger');
   });
 
   return expressApplication;

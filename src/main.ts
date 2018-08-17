@@ -36,9 +36,7 @@ commander
     
     [Service]
     Type=simple
-    ExecStart=/usr/bin/web-push-service start --host ${command.host ? command.host : 'your-domain.com'} --mongo ${
-        command.mongo ? command.mongo : 'mongodb://127.0.0.1:27017'
-      } --port ${command.port}
+    ExecStart=/usr/bin/web-push-service start --host ${command.host ? command.host : 'your-domain.com'}${command.mongo ? `--mongo ${command.mongo}` : ''} --port ${command.port}
     
     [Install]
     WantedBy=multi-user.target`,
@@ -115,7 +113,7 @@ commander
       ssl_ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA;
       ssl_prefer_server_ciphers on;`
           : ''
-      }
+        }
       
   
       location / {
