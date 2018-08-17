@@ -29,7 +29,7 @@ export class InMemoryClientRepository implements IClientRepository {
           return;
         }
 
-        resolve(document);
+        resolve(new Client(document.id, document.key, document.publicKey, document.privateKey, document.endpoint));
       });
     });
   }
@@ -49,7 +49,7 @@ export class InMemoryClientRepository implements IClientRepository {
           return;
         }
 
-        resolve(document);
+        resolve(new Client(document.id, document.key, document.publicKey, document.privateKey, document.endpoint));
       });
     });
   }
@@ -69,7 +69,7 @@ export class InMemoryClientRepository implements IClientRepository {
           return;
         }
 
-        resolve(document);
+        resolve(new Client(document.id, document.key, document.publicKey, document.privateKey, document.endpoint));
       });
     });
   }

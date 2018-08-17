@@ -49,7 +49,7 @@ export class InMemorySubscriptionRepository implements ISubscriptionRepository {
             return;
           }
 
-          resolve(document.subscription);
+          resolve(new Subscription(document.subscription.endpoint, document.subscription.expirationTime, document.subscription.keys));
         },
       );
     });
@@ -64,7 +64,7 @@ export class InMemorySubscriptionRepository implements ISubscriptionRepository {
           return;
         }
 
-        resolve(documents.map((document: any) => document.subscription));
+        resolve(documents.map((document: any) => new Subscription(document.subscription.endpoint, document.subscription.expirationTime, document.subscription.keys)));
       });
     });
   }
