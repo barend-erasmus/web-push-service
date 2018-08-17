@@ -1,6 +1,6 @@
 {
   "name": "web-push-service",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
@@ -58,5 +58,12 @@
   },
   "bin": {
     "web-push-service": "./bin/web-push-service"
-  }
+  },
+  "keywords": [
+    "web push",
+    "notifications",
+    "push notifications",
+    "push api",
+    "html5"
+  ]
 }

@@ -28,7 +28,7 @@ export class PushRouter {
     } catch (error) {
       console.error(error);
 
-      response.json({
+      response.status(500).json({
         message: error.message,
         stackTrace: error.stackTrace,
       });

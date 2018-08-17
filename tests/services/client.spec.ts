@@ -87,4 +87,43 @@ describe('ClientService', () => {
       }
     });
   });
+
+  describe('#findById', () => {
+    it('Should call ClientRepository#findById', async () => {
+      const clientRepository: IClientRepository = {
+        findById: sinon.spy() as any,
+      } as IClientRepository;
+
+      const clientService: ClientService = new ClientService(clientRepository, null);
+
+      await clientService.find('my-id');
+
+      expect((clientRepository.findById as sinon.SinonSpy).calledOnce).to.be.true;
+    });
+
+    it('Should call ClientRepository#findById with correct parameters', async () => {
+      const clientRepository: IClientRepository = {
+        findById: sinon.spy() as any,
+      } as IClientRepository;
+
+      const clientService: ClientService = new ClientService(clientRepository, null);
+
+      await clientService.find('my-id');
+
+      const key: string = (clientRepository.findById as sinon.SinonSpy).args[0][0];
+      expect(key).to.be.eq('my-id');
+    });
+
+    it('Should throw error given null key', async () => {
+      const clientService: ClientService = new ClientService(null, null);
+
+      try {
+        await clientService.find(null);
+
+        throw new Error('Expected Error');
+      } catch (error) {
+        expect(error.message).to.be.eq('Id cannot be null');
+      }
+    });
+  });
 });
