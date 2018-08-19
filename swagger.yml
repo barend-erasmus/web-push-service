@@ -40,6 +40,10 @@ paths:
             $ref: "#/definitions/ClientPostResponse"
         400:
           description: "Invalid Request Body"
+        500:
+          description: "Internal Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /client/channels:
     get:
       tags:
@@ -60,6 +64,10 @@ paths:
               type: "string"
         401:
           description: "Unauthorized"
+        500:
+          description: "Internal Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /push/{channel}:
     post:
       tags:
@@ -78,11 +86,25 @@ paths:
             type: string
           required: true
           description: Channel Name
+        - in: "body"
+          name: "body"
+          description: "Payload of push notification"
+          required: true
+          schema:
+            $ref: "#/definitions/PushPostRequest"
       responses:
+        200:
+          description: "Success"
+          schema:
+            type: "string"
         400:
           description: "Invalid Request Parameters"
         401:
           description: "Unauthorized"
+        500:
+          description: "Internal Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /subscription/{channel}:
     delete:
       tags:
@@ -101,11 +123,25 @@ paths:
             type: string
           required: true
           description: Channel Name
+        - in: "body"
+          name: "body"
+          description: "Subscription Object"
+          required: true
+          schema:
+            $ref: "#/definitions/SubscriptionDeleteRequest"
       responses:
+        200:
+          description: "Success"
+          schema:
+            type: "string"
         400:
           description: "Invalid Request Body/Parameters"
         401:
           description: "Unauthorized"
+        500:
+          description: "Internal Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
     post:
       tags:
       - "Subscription"
@@ -123,11 +159,25 @@ paths:
             type: string
           required: true
           description: Channel Name
+        - in: "body"
+          name: "body"
+          description: "Subscription Object"
+          required: true
+          schema:
+            $ref: "#/definitions/SubscriptionPostRequest"
       responses:
+        200:
+          description: "Success"
+          schema:
+            type: "string"
         400:
           description: "Invalid Request Body/Parameters"
         401:
           description: "Unauthorized"
+        500:
+          description: "Internal Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 securityDefinitions:
   Standard:
     type: "apiKey"
@@ -158,6 +208,44 @@ definitions:
       publicKey:
         type: "string"
         example: "BEXzLx1Jpum77zWGzVUfxQnuCXp0O8GCnXM1rsgRfPmvEuUoRz4ML8T2ZbTLBA3oKOaOqgX/s71rom5J9xE2+us="
+  PushPostRequest:
+    type: "object"
+  SubscriptionDeleteRequest:
+    type: "object"
+    required:
+    - "endpoint"
+    - "expirationTime"
+    - "keys"
+    properties:
+      endpoint:
+        type: "string"
+        example: "https://fcm.googleapis.com/fcm/send/e3Nz_AF5KeE:APA91bGyIEnrkAX0vrqT-WjKE-3MtR5fro3fM0-WAe-LxU4raxA_LEPfuakJtdPhef9tzb7OMyrTcu21Tvp1HCLuya9n9rW82o-eAnnEoYQ5-tCBXJDKqJqJObOXMjoua1cWYWFNIqWLtRsj_TJJjIrAeEmDkOaWlw"
+      expirationTime:
+        type: "number"
+      keys:
+        type: "object"
+  SubscriptionPostRequest:
+    type: "object"
+    required:
+    - "endpoint"
+    - "expirationTime"
+    - "keys"
+    properties:
+      endpoint:
+        type: "string"
+        example: "https://fcm.googleapis.com/fcm/send/e3Nz_AF5KeE:APA91bGyIEnrkAX0vrqT-WjKE-3MtR5fro3fM0-WAe-LxU4raxA_LEPfuakJtdPhef9tzb7OMyrTcu21Tvp1HCLuya9n9rW82o-eAnnEoYQ5-tCBXJDKqJqJObOXMjoua1cWYWFNIqWLtRsj_TJJjIrAeEmDkOaWlw"
+      expirationTime:
+        type: "number"
+      keys:
+        type: "object"
+  ErrorResponse:
+    type: "object"
+    required:
+    - "message"
+    properties:
+      message:
+        type: "string"
+        example: "An error occurred"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

@@ -65,7 +65,7 @@ describe('InMemoryClientRepository', () => {
     it('Should return null given key does not exist', async () => {
       const clientRepository: InMemoryClientRepository = new InMemoryClientRepository(null);
 
-      const client: Client = await clientRepository.find('id');
+      const client: Client = await clientRepository.findById('id');
 
       expect(client).to.be.null;
     });

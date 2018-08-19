@@ -45,8 +45,6 @@
     <script>
         const publicKey = '{{{client.publicKey}}}';
 
-        initialize(publicKey, '{{host}}');
-
         if (!('Notification' in window)) {
             redirect(false);
         }
@@ -56,6 +54,7 @@
         }
 
         if (Notification.permission === 'granted') {
+            await initialize(publicKey, '{{host}}');
             redirect(true);
         }
 
@@ -67,17 +66,18 @@
             redirect(false);
         }
 
-        function prompt() {
-            Notification.requestPermission().then(function (result) {
-                switch (result) {
-                    case 'denied':
-                        redirect(false);
-                        return;
-                    case 'granted':
-                        redirect(true);
-                        return;
-                }
-            });
+        async function prompt() {
+            const result = await Notification.requestPermission();
+
+            switch (result) {
+                case 'denied':
+                    redirect(false);
+                    return;
+                case 'granted':
+                    await initialize(publicKey, '{{host}}');
+                    redirect(true);
+                    return;
+            }
         }
 
         function redirect(granted) {

@@ -46,11 +46,9 @@ export class SubscriptionService {
     );
 
     if (existingSubscription) {
-        return;
+      return;
     }
 
-    if (!existingSubscription) {
-      await this.subscriptionRepository.insert(key, channel, subscription);
-    }
+    await this.subscriptionRepository.insert(key, channel, subscription);
   }
 }

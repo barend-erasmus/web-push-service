@@ -29,8 +29,7 @@ export class ClientRouter {
       console.error(error);
 
       response.status(500).json({
-        message: error.message,
-        stackTrace: error.stackTrace,
+        message: 'An error occurred'
       });
     }
   }

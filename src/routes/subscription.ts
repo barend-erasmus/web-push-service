@@ -38,9 +38,8 @@ export class SubscriptionRouter {
     } catch (error) {
       console.error(error);
 
-      response.json({
-        message: error.message,
-        stackTrace: error.stackTrace,
+      response.status(500).json({
+        message: 'An error occurred'
       });
     }
   }
@@ -78,8 +77,7 @@ export class SubscriptionRouter {
       console.error(error);
 
       response.status(500).json({
-        message: error.message,
-        stackTrace: error.stackTrace,
+        message: 'An error occurred'
       });
     }
   }
