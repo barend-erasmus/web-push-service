@@ -34,6 +34,10 @@ paths:
         schema:
           $ref: "#/definitions/ClientPostRequest"
       responses:
+        201:
+          description: "Created"
+          schema:
+            $ref: "#/definitions/ClientPostResponse"
         400:
           description: "Invalid Request Body"
   /client/channels:
@@ -48,6 +52,12 @@ paths:
       produces:
       - "application/json"
       responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              type: "string"
         401:
           description: "Unauthorized"
   /push/{channel}:
@@ -127,12 +137,27 @@ definitions:
   ClientPostRequest:
     type: "object"
     required:
-    - "name"
-    - "photoUrls"
+    - "endpoint"
     properties:
       endpoint:
         type: "string"
         example: "https://your-domain.com"
+  ClientPostResponse:
+    type: "object"
+    required:
+    - "id"
+    - "key"
+    - "publicKey"
+    properties:
+      id:
+        type: "string"
+        example: "4fb730bb-924d-42ff-bf76-ac1fe232c89b"
+      key:
+        type: "string"
+        example: "ecc58cd8-fc3f-4ee6-af05-5e25d4b707b9"
+      publicKey:
+        type: "string"
+        example: "BEXzLx1Jpum77zWGzVUfxQnuCXp0O8GCnXM1rsgRfPmvEuUoRz4ML8T2ZbTLBA3oKOaOqgX/s71rom5J9xE2+us="
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

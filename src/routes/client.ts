@@ -20,7 +20,7 @@ export class ClientRouter {
 
       const client: Client = await clientService.create(endpoint);
 
-      response.json({
+      response.status(201).json({
         id: client.id,
         key: client.key,
         publicKey: client.publicKey,
