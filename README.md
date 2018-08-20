@@ -72,20 +72,20 @@ Usage: start [options]
 
   Options:
 
-    -h --host <host>    Host
-    -m --mongo <host>   Mongo
-    -p --port <port>    Port
+    -h --host <host>    defaults to 'localhost:8080'
+    -m --mongo <host>   if not provided, file-based storage will be used
+    -p --port <port>    port
     -h, --help          output usage information
 
 Usage: install [options]
 
   Options:
 
-    -h --host <host>   Host
-    -m --mongo <host>  Mongo
-    -p --port <port>   Port
-    --nginx            Install NGINX
-    --letsencrypt      Install Let's Encrypt
+    -h --host <host>   defaults to 'your-domain.com'
+    -m --mongo <host>  if not provided, file-based storage will be used
+    -p --port <port>   port
+    --nginx            install NGINX
+    --letsencrypt      install and configure Let's Encrypt
     -h, --help         output usage information
 ```
 

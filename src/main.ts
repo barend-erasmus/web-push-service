@@ -14,11 +14,11 @@ import { StartCLIValidator } from './validators/cli/start';
 
 commander
   .command('install')
-  .option('-h --host <host>', 'Host')
-  .option('-m --mongo <host>', 'Mongo')
-  .option('-p --port <port>', 'Port')
-  .option('--nginx', 'Install NGINX')
-  .option('--letsencrypt', `Install Let's Encrypt`)
+  .option('-h --host <host>', `defaults to 'your-domain.com'`)
+  .option('-m --mongo <host>', 'if not provided, file-based storage will be used')
+  .option('-p --port <port>', 'port')
+  .option('--nginx', 'install NGINX')
+  .option('--letsencrypt', `install and configure Let's Encrypt`)
   .action((command: any) => {
     if (!InstallCLIValidator.validate(command)) {
       for (const error of InstallCLIValidator.errors(command)) {
@@ -135,9 +135,9 @@ commander
 
 commander
   .command('start')
-  .option('-h --host <host>', 'Host')
-  .option('-m --mongo <host>', 'Mongo')
-  .option('-p --port <port>', 'Port')
+  .option('-h --host <host>', `defaults to 'localhost:8080'`)
+  .option('-m --mongo <host>', 'if not provided, file-based storage will be used')
+  .option('-p --port <port>', 'port')
   .action((command: any) => {
     if (!StartCLIValidator.validate(command)) {
       for (const error of StartCLIValidator.errors(command)) {
