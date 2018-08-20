@@ -29,7 +29,7 @@ Host your own Web Push Service.
 - Connect to your Linux Machine via SSH using your preferred client.
 - Install [node.js](https://nodejs.org) by using the [guide](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions) on their website.
 - Install `Web Push Service` via [npm](https://www.npmjs.com) by running `sudo npm install -g web-push-service`.
-- Configure `Web Push Service` by runnning `web-push-service --host your-domain.com --mongo mongodb://127.0.0.1:27017 --port 8080`
+- Configure `Web Push Service` by runnning `web-push-service start --host your-domain.com --mongo mongodb://127.0.0.1:27017 --port 8080`
 
 Browse `https://your-domain.com` to view the [Swagger UI](https://swagger.io)
 
