@@ -65,7 +65,7 @@ async function unsubscribe(channel, pushSubscription = null) {
   });
 }
 
-async function initialize(publicKey, webPushServiceHost) {
+async function initialize(publicKey, webPushServiceHost, channels) {
   if (publicKey) {
     state.publicKey = publicKey;
   }
@@ -85,6 +85,10 @@ async function initialize(publicKey, webPushServiceHost) {
     });
 
     await subscribe('default', pushSubscription);
+    
+    for (const channel of channels) {
+      await subscribe(channel, pushSubscription);
+    }
   }
 }
 

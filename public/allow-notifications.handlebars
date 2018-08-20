@@ -43,6 +43,8 @@
     </div>
     <script src="/static/scripts/main.js"></script>
     <script>
+        const channels = '{{{channels}}}' === '' ? [] : '{{{channels}}}'.split(',');
+
         const publicKey = '{{{client.publicKey}}}';
 
         if (!('Notification' in window)) {
@@ -54,8 +56,9 @@
         }
 
         if (Notification.permission === 'granted') {
-            await initialize(publicKey, '{{host}}');
-            redirect(true);
+            initialize(publicKey, '{{host}}', channels).then(() => {
+                redirect(true);
+            });
         }
 
         function onClickAllow() {
@@ -74,7 +77,7 @@
                     redirect(false);
                     return;
                 case 'granted':
-                    await initialize(publicKey, '{{host}}');
+                    await initialize(publicKey, '{{host}}', channels);
                     redirect(true);
                     return;
             }

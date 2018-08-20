@@ -5,6 +5,7 @@ export class PromptGetRequestValidator {
         const schema: any = {
             type: 'object',
             properties: {
+                channels: { type: 'string' },
                 name: { type: 'string' },
             },
             required: ['name'],

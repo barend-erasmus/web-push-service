@@ -56,6 +56,7 @@ This request will return your `key` and `publicKey`.
 
 ```json
 {
+  "id": "2ab7acb4-f8ef-40e3-b2e9-f7855047d835",
   "key": "467b5026-c14a-48fc-97b1-f3ca5fb21a95",
   "publicKey": "BBqOI20HlYxLMth7sbTk002PMinG7QVRUC12BEZpvq9r1maySNv30MeHxHSYPzKULqhHiSIsFKsdVlc9IJ1NuwE="
 }

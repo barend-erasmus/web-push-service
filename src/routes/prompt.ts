@@ -29,6 +29,6 @@ export class PromptRouter {
 
     const host: string = request['configuration'].host.startsWith('localhost') ? `http://${request['configuration'].host}/api/v1` : `https://${request['configuration'].host}/api/v1`;
 
-    response.render('allow-notifications', { client, host, name: request.query.name });
+    response.render('allow-notifications', { channels: request.query.channels ? request.query.channels : '', client, host, name: request.query.name });
   }
 }

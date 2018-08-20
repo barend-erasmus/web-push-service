@@ -156,7 +156,7 @@ commander
       subscriptionRepository = new MongoSubscriptionRepository(command.mongo);
     } else {
       clientRepository = new InMemoryClientRepository('./clients.dat');
-      subscriptionRepository = new InMemorySubscriptionRepository();
+      subscriptionRepository = new InMemorySubscriptionRepository('./subscriptions.dat');
     }
 
     const expressApplication = initialize(
